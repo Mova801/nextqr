@@ -145,7 +145,7 @@ class JSONFile(File):
 
 # Log class inherit from File
 #   a Log is a File which create 2 directories and a file in append mode
-#       dir 1: contains the daily logs dirs
+#       dir 1: contains the daily logs directories
 #       dir 2: daily directory (every day a new one is generated)
 #   in the log file are stored data
 #
@@ -183,6 +183,7 @@ class Configuration(ConfigParser):
         self._debug = kwargs.get("debug", False)
         return super().__init__()
 
+    @ExceptionsHandler
     def load(self, filename: str):
         self._filename = IOstream.join_path(self._path, filename)
         self.read(self._filename)
@@ -220,6 +221,19 @@ class IOstream:
         """create a new folder in the given path"""
         try:
             os.mkdir(path)
+            return True
+        except FileExistsError:
+            return False
+
+    @classmethod
+    def mkdirs(cls, path: str) -> bool:
+        """create a new folder in the given path"""
+        try:
+            directories = path.split("\\")
+            path = ""
+            for dir in directories:
+                path = IOstream.join_path(path, dir)
+                IOstream.mkdir(path)
             return True
         except FileExistsError:
             return False

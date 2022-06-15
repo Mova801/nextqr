@@ -1,21 +1,61 @@
-import utility as uti
-from utility import dec, config, io
-from color_class import Color
+from distutils.command.config import config
+import os
+from PIL import Image
 
-def main() -> None:
-    io.clear_terminal()
-    if dec.pretty(" [::] ", color="magenta", mymsg=True, input=True, clear=True) != config.get_version()[:4]:
-        io.clear_terminal()
+from messagehandler.message_handler import MessageHandler
+from ios.iostream import ExceptionsHandler, IOstream, Configuration, Log
+import src.constants as C
+
+
+msg = MessageHandler(debug=True)
+
+# data una stringa che identifica un parametro del file di conf, e dato il rispettivo valore, chiede all'utente
+# un nuovo valore per il parametro (include messaggi di aggiornamento a schermo)
+
+
+@ExceptionsHandler
+def update_parameter(parameter: str, param_value: any) -> str:
+    msg.clsprint("SETT_CONFIGURATION", color="cyan")
+    return msg.myprint(f"{config}\n REDEFINE → {parameter}({param_value}): ", color="cyan", input=True)
+
+
+# resetta il file di configurazione e, se l'operazione ha successo, visualizza a video un messaggio di aggiornamento
+@ExceptionsHandler
+def reset(config: Configuration) -> None:
+    config['APP']['output_directory'] = ""
+    config['APP']['input_directory'] = ""
+    config['QR']['fill_color'] = (0, 0, 0)
+    config['QR']['back_color'] = (37, 147, 229)
+    config['QR']['logo_dim'] = 60
+    config['CONSOLE']['name'] = "NextQR"
+    config['CONSOLE']['width'] = 80
+    config['CONSOLE']['name'] = "NextQR"
+    config['CAMERA']['show_camera'] = "True"
+
+    config['APP']["last_modify"] = IOstream.get_date() + "-" + \
+        IOstream.get_time()
+
+
+def app_settings() -> None:
+
+    config = Configuration()
+    config.load("src\\nextqr.ini")
+    version = config['APP'].get("version", "")
+    # if the right version (password) is entered then continue else return
+    if msg.myprint("@_> ", color="cyan", input=True) != version:
         return
-    try:
-        max_page = 2
-        page = 1
-        while True:
-            #dec.pretty("CURRENT_PAGE", color="green", clear=True, format=[page, max_page])
-            dec.pretty(f"SETT_MENU_PAG{page}", format=[page, max_page])
 
-            menu_input = dec.pretty(
-                " ► ", color="magenta", input=True, mymsg=True)
+    dir1 = config['APP'].get("directory_1", "logs")
+    dir2 = config['QR'].get("directory_2", "log")
+    log = Log(f"log[{IOstream.get_time}]", dir1=dir1, dir2=dir2)
+
+    try:
+        current_page = 1
+        while True:
+            msg.print(f"MENU_PAG{current_page}", clear=True)
+            #dec.pretty("CURRENT_current_page", color="green", clear=True, format=[current_page, max_current_page])
+
+            menu_input = msg.myprint(" ► ", color="magenta", input=True)
 
             # options
             match menu_input:
@@ -25,24 +65,23 @@ def main() -> None:
 
                 # opzione che scorre alla pagina successiva
                 case ">":
-                    if page in range(1, max_page):
-                        page += 1
-                        io.clear_terminal()
+
+                    if current_page < C.MAX_PAGES:
+                        current_page += 1
                         continue
 
                 # opzione che scorre alla pagina precedente
                 case "<":
-                    if page in range(2, max_page+1):
-                        page -= 1
-                        io.clear_terminal()
+                    if current_page > 1:
+                        current_page -= 1
                         continue
 
                 # opzione che  resetta il file di configurazione
                 case "opt:reset":
-                    dec.pretty("MSG_VALID_INPUT", color="green", clear=True)
-                    dec.pretty("SETT_RESET", color="yellow")
-                    config.reset()
-                    uti.update_config()
+                    msg.colprint("SETT_RESET", "yellow")
+                    reset(config)
+                    config.save()
+                    msg.clsprint("MSG_UPDATE", color="magenta")
                     continue
                     # exe_path = io.join_path(config.get_exe_location(), "starter.py")
                     # os.system(exe_path)
@@ -50,124 +89,105 @@ def main() -> None:
 
                 # opzione che mostra le impostazioni correnti
                 case "opt:show":
-                    dec.pretty("MSG_VALID_INPUT", color="green", clear=True)
-                    config.show_conf()
-                    dec.pretty("\n ► press 'Enter[←]' to continue ", mymsg=True, color="magenta", input=True, clear=True)
+                    msg.colprint("SETT_CONFIGURATION", "cyan")
+                    msg.myprint(
+                        f"{config}\n ► press 'Enter[←]' to continue ", color="magenta", clear=True)
                     continue
 
-                # opzione per impostare il colore di riempimento del QR
-                case "qr:fill":
-                    fill_color = Color(config.get_fill_color())
-                    fill_color << uti.get_new_parameter("qr_fill", fill_color)
-                    config.set_fill_color(fill_color)
-                    uti.update_config()
-                    config.show_conf()
-                    dec.pretty("\n ► press 'Enter[←]' to continue ", mymsg=True, color="magenta", input=True, clear=True)
-                    continue
+                # opzione per impostare il colore di riempimento/background del QR
+                case "qr:fill" | "qr:back":
+                    if menu_input == "qr:fill":
+                        color_opt = "fill_color"
+                    else:
+                        color_opt = "back_color"
+                    color = config['QR'].get(color_opt, (0, 0, 0))
+                    color = update_parameter(color_opt, color)
+                    if not isinstance(color, tuple) and len(color) != 3:
+                        config['QR'][color_opt] = color
+                        config.save()
+                    else:
+                        msg.print("ERR_INV_INPUT")
+                        continue
 
-                # opzione per impostare il colroe di background del QR
-                case "qr:back":
-                    back_color = Color(config.get_back_color())
-                    back_color << uti.get_new_parameter("qr_back", back_color)
-                    config.set_back_color(back_color)
-                    uti.update_config()
-                    config.show_conf()
-                    dec.pretty("\n ► press 'Enter[←]' to continue ", mymsg=True, color="magenta", input=True, clear=True)
+                    msg.myprint(
+                        f"{config}\n ► press 'Enter[←]' to continue ", color="magenta", clear=True)
                     continue
 
                 # opzione per impostare la dimensione del logo del QR
                 case "qr:logo":
-                    dim_logo = config.get_logo_dim()
-                    new_value = uti.get_new_parameter("logo_dim", dim_logo)
+                    logo_dim = config['QR'].get("logo_dim", 60)
                     try:
-                        new_value = int(new_value)
+                        logo_dim = update_parameter("logo_dim", logo_dim)
                     except ValueError as error:
-                        uti.generate_log(error)
-
-                    if config.set_logo_dim(new_value):
-                        uti.update_config()
-                        config.show_conf()
-                        dec.pretty("\n ► press 'Enter[←]' to continue ", mymsg=True, color="magenta", input=True, clear=True)
+                        log.log(error)
+                        msg.print("ERR_INV_INPUT")
                         continue
 
-                
-                case "app:outpath":
-                    path = config.get_out_dir()
-                    new_value = uti.get_new_parameter("output_directory", path)
-                    if config.set_out_dir(new_value):
-                        uti.update_config()
-                        config.show_conf()
-                        dec.pretty("\n ► press 'Enter[←]' to continue ", mymsg=True, color="magenta", input=True, clear=True)
+                    config.save()
+                    msg.myprint(
+                        f"{config}\n ► press 'Enter[←]' to continue ", color="magenta", clear=True)
+                    continue
+
+                case "app:outpath" | "app:inpath":
+                    if menu_input == "app:outpath":
+                        dir_opt = "output_directory"
+                    else:
+                        dir_opt = "input_directory"
+                    dir = config['APP'].get(dir_opt, (0, 0, 0))
+                    dir = update_parameter(dir_opt, dir)
+                    if os.path.isdir(dir) or not dir:
+                        config['APP'][dir_opt] = dir
+                        config.save()
+                    else:
+                        msg.print("ERR_INV_INPUT")
                         continue
 
-                case "app:inpath":
-                    path = config.get_input_dir()
-                    new_value = uti.get_new_parameter("input_directory", path)
-                    if config.set_input_dir(new_value):
-                        uti.update_config()
-                        config.show_conf()
-                        dec.pretty("\n ► press 'Enter[←]' to continue ", mymsg=True, color="magenta", input=True, clear=True)
+                    msg.myprint(
+                        f"{config}\n ► press 'Enter[←]' to continue ", color="magenta", clear=True)
+                    continue
+
+                case "app:cwidth" | "app:clines":
+                    if menu_input == "app:cwidth":
+                        cons_opt = "width"
+                    else:
+                        cons_opt = "height"
+                    cons = config['APP'].get(cons_opt, 65)
+                    cons = int(update_parameter(f"c{cons_opt}", cons))
+                    if isinstance(cons, int):
+                        config['APP'][cons_opt] = cons
+                        config.save()
+                    else:
+                        msg.print("ERR_INV_INPUT")
                         continue
-
-                case "app:cwidth":
-                    width = config.get_console_width()
-                    new_value = uti.get_new_parameter("cwidth", width)
-                    try:
-                        new_value = int(new_value)
-                    except ValueError as error:
-                        uti.generate_log(error)
-
-                    if config.set_console_width(new_value):
-                        uti.update_config()
-                        dec.pretty("APP_RESTART", color="cyan")
-                        # exe_path = io.join_path(config.get_exe_location(), "starter.py")
-                        # os.system(exe_path)
-                        # exit()
-                        continue
-
-                case "app:clines":
-                    lines = config.get_console_lines()
-                    new_value = uti.get_new_parameter("clines", lines)
-                    try:
-                        new_value = int(new_value)
-                    except ValueError as error:
-                        uti.generate_log(error)
-
-                    new_value = int(new_value)
-                    if config.set_console_lines(new_value):
-                        uti.update_config()
-                        dec.pretty("APP_RESTART", color="cyan")
-                        # exe_path = io.join_path(config.get_exe_location(), "starter.py")
-                        # os.system(exe_path)
-                        # exit()
-                        continue
+                    msg.myprint(
+                        f"{config}\n ► press 'Enter[←]' to continue ", color="magenta", clear=True)
+                    continue
 
                 case "cam:showcam":
-                    show = config.get_camera()
-                    new_value = uti.get_new_parameter("camera", show)
-                    match new_value:
-                        case "True"|"true":
-                            new_value = True
-                        case "False"|"false":
-                            new_value = False
-                    if config.set_camera(new_value):
-                        uti.update_config()
-                        config.show_conf()
-                        dec.pretty("\n ► press 'Enter[←]' to continue ", color="magenta", mymsg=True, input=True, clear=True)
-                        continue                  
+                    cam = config['APP'].get("show_camera", True)
+                    try:
+                        cam = bool(update_parameter(f"c{menu_input}", cam))
+                    except ValueError as error:
+                        log.log(error)
+                        msg.print("ERR_INV_INPUT")
+                        continue
+                    config['APP']['show_camera'] = cam
+                    config.save()
+                    msg.myprint(
+                        f"{config}\n ► press 'Enter[←]' to continue ", color="magenta", clear=True)
+                    continue
 
-            dec.pretty("ERR_INV_INPUT", color="red", clear=True)
+            msg.colprint("ERR_INV_INPUT", "red", clear=True)
 
-        io.clear_terminal()
         return True
 
     except FileNotFoundError as error:
-            uti.generate_log(error)
+        log.log(error)
     except PermissionError as error:
-            uti.generate_log(error)
-    io.clear_terminal()
+        log.log(error)
+    IOstream.clear_terminal()
     return False
 
 
 if __name__ == "__main__":
-    main()
+    app_settings()

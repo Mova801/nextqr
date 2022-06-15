@@ -3,23 +3,21 @@ import base64
 from PIL import Image
 from dataclasses import dataclass
 
+
 @dataclass
 class ImageStream:
     bytes_img: bytes = None
     data: any = None
     img_name: str = None
-    path_img: str = None
     PIL: bool = False
 
-    def open_image(self, img_name: str, img_path: str):
+    def open_image(self, img_name):
         try:
-            self.path_img = img_path
-            img = self.path_img + img_name
-            self.bytes_img = cv2.imread(img)
-            self.img_name = img
-            self.PIL = False
-            return self.bytes_img
-        
+            self._bytes = cv2.imread(img_name)
+            self._imgname = img_name
+            self._PIL = False
+            return self._bytes
+
         except ValueError:
             return False
 
@@ -27,86 +25,83 @@ class ImageStream:
         try:
             self.path_img = img_path.get("path", "")
             img = self.path_img + img_name
-            self.bytes_img = Image.open(rf"{img}")
-            self.img_name = img
-            self.PIL = True
-            return self.bytes_img
+            self._bytes = Image.open(rf"{img}")
+            self._imgname = img
+            self._PIL = True
+            return self._bytes
         except ValueError:
             return False
 
-    def find_qr(self) -> any:
-        if self.PIL:
-            return None
+    def search_qr(self) -> any:
+        if self._PIL:
+            return False
         detector = cv2.QRCodeDetector()
         try:
-            self.data, found, _ = detector.detectAndDecode(self.bytes_img)
-            if found is None:
-                return None
+            self._qrdata, found, _ = detector.detectAndDecode(self._bytes)
+            if not self._qrdata or found is None:
+                self._qrdata = None
+                return False
 
-            if self.data == "":
-                self.data = None
-            return self.data
+            return self._qrdata
 
         except ValueError:
             return None
 
-    def display(self) -> None:
-        if self.PIL:
-            return None
-        cv2.imshow("", self.bytes_img)
+    def display(self):
+        if self._PIL:
+            return
+        cv2.imshow("", self._bytes)
         cv2.waitKey(0)
         cv2.destroyAllWindows()
 
     def display_PIL(self) -> None:
-        if self.PIL is False:
+        if self._PIL is False:
             return None
-        self.bytes_img.show()
+        self._bytes.show()
 
     def get_data(self) -> any:
-        return self.data
+        return self._qrdata
 
     def get_image(self) -> bytes:
-        return self.bytes_img
+        return self._bytes
 
     def get_image_name(self) -> str:
-        return self.img_name
+        return self._imgname
 
     def b64enc(self) -> bytes:
-        if self.PIL is False:
+        if self._PIL is False:
             return ""
-        with open(self.path_img + self.img_name, "rb") as img:
+        with open(self.path_img + self._imgname, "rb") as img:
             return base64.b64encode(img.read())
 
     def b64dec(self, **data: any) -> bytes:
-        if self.PIL is False:
+        if self._PIL is False:
             data = data.get("data", "")
         else:
-            data = data.get("data", self.data)
+            data = data.get("data", self._qrdata)
 
-        self.data = base64.b64decode(data)
-        return self.data
+        self._qrdata = base64.b64decode(data)
+        return self._qrdata
 
     def reset(self) -> None:
-        self.bytes_img = None
-        self.data = None
+        self._bytes = None
+        self._qrdata = None
 
-    def find_qr_in_camera(self, **options: dict) -> any:
-        if self.PIL:
-            return None
+    def search_qr_in_camera(self, showcamera: bool = True, windowname: str = ""):
         video = cv2.VideoCapture(0)
         detector = cv2.QRCodeDetector()
-        self.data = None
+        self._qrdata = None
         while True:
-            _, img = video.read()
-            self.data = detector.detectAndDecode(img)[0]
+            img = video.read()[1]
+            self._qrdata = detector.detectAndDecode(img)[0]
 
-            if self.data:
+            if self._qrdata:
                 video.release()
                 cv2.destroyAllWindows()
-                return self.data
+                return self._qrdata
 
-            if options.get("showCamera", False):
-                cv2.imshow("NextQR - ScanningQR", img)
+            if showcamera:
+                cv2.imshow(windowname, img)
                 if cv2.waitKey(1) == ord("-"):
                     break
 

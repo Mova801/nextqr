@@ -1,6 +1,5 @@
 from PIL import Image
 
-from imagestream.imagestream import ImageStream
 from messagehandler.message_handler import MessageHandler
 from ios.iostream import IOstream, Configuration, Log
 from qrpack.qr_class import QR
@@ -35,9 +34,6 @@ def generate_qr() -> None:
     logo = msg.iprint("QGEN_ENTER_LOGO", clear=True)
     if logo:
         logo = f"{logo}.png"
-
-        img = ImageStream()
-
         try:
             logo = IOstream.join_path(in_dir, logo)
             Image.open(logo)

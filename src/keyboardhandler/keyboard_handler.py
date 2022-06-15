@@ -15,7 +15,10 @@ class KeyboardHandler:
     def __init__(self, *args) -> None:
         self._listener = keyboard.Listener(on_press=self.on_press)
         self._controller = keyboard.Controller()
-        self._keys = args
+        if isinstance(args, (list, tuple, set)):
+            self._keys = args[0]
+        else:
+            self._keys = args
         self._key_input = None
         self._paused = False
 

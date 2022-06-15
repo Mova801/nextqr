@@ -35,11 +35,11 @@ class MessageHandler:
     _dict_messages: dict
 
     # inizializza la classe
-    #   crea un dizionario in cui verranno salvati i messaggi da utilizzare nell'applicazione
+    # crea un dizionario in cui verranno salvati i messaggi da utilizzare nell'applicazione
     def __init__(self, **kwargs) -> None:
         self._debug = kwargs.get("debug", False)
         self._messages_location = kwargs.get("_import", "messages")
-        self._dict_messages = {}
+        self._messages_registry = {}
 
     # inizializza un certo messaggio
     #   importa il messaggio
@@ -49,13 +49,13 @@ class MessageHandler:
     def init(self, *messages) -> None:
         for message in messages:
             exec(f"from {self._messages_location} import {message} as MSG")
-            exec("self._dict_messages[message] = MSG")
+            exec("self._messages_registry[message] = MSG")
             exec("del MSG")
             if self._debug:
                 cprint(f"{message} imported correcly", "cyan")
 
     def get_preset_msgs(self):
-        return [msg_item for msg_item in self._dict_messages]
+        return [msg_item for msg_item in self._messages_registry]
 
     # stampa messaggi preimpostati o personalizzati
     # flags:
@@ -68,12 +68,12 @@ class MessageHandler:
 
     def private_print(self, msg: str, **flags: any) -> str:
         if flags.get("mymsg", False) is False:
-            get_msg = self._dict_messages.get(msg, None)
+            get_msg = self._messages_registry.get(msg, None)
             if get_msg is not None:
                 msg: str = get_msg
             else:
                 if self.init(msg):
-                    msg = self._dict_messages.get(msg)
+                    msg = self._messages_registry.get(msg)
                 else:
                     msg = "<-MESSAGE NOT FOUND - TRY ANOTHER MESSAGE CODE OR CHECK THE GIVEN VALUE->"
                     flags["color"] = "red"
@@ -110,9 +110,9 @@ class MessageHandler:
         return self.private_print(msg, input=True, **kwargs)
 
     def colprint(self, msg: str, color, **kwargs: dict) -> str:
-        return self.private_print(msg, color, **kwargs)
+        return self.private_print(msg, color=color, **kwargs)
 
-    def clprint(self, msg: str, **kwargs: dict) -> str:
+    def clsprint(self, msg: str, **kwargs: dict) -> str:
         return self.private_print(msg, clear=True, **kwargs)
 
     def myprint(self, msg: str, **kwargs: dict) -> str:
