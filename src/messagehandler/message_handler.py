@@ -9,7 +9,7 @@ __version__: str = "0.1.0"
 __author__: str = "Mova801"
 
 
-def Debug(func):
+def ExceptionsHandler(func):
     def wrapper(*args, **kwargs):
         msg_hnd = args[0]
         try:
@@ -37,7 +37,7 @@ class MessageHandler:
     # inizializza la classe
     # crea un dizionario in cui verranno salvati i messaggi da utilizzare nell'applicazione
     def __init__(self, **kwargs) -> None:
-        self._debug = kwargs.get("debug", False)
+        self._debug = kwargs.get("ExceptionsHandler", False)
         self._messages_location = kwargs.get("_import", "messages")
         self._messages_registry = {}
 
@@ -45,7 +45,7 @@ class MessageHandler:
     #   importa il messaggio
     #   aggiunge il messaggio al dizionario
     #   cancella il messaggio importato (rimane nel dict)
-    @Debug
+    @ExceptionsHandler
     def init(self, *messages) -> None:
         for message in messages:
             exec(f"from {self._messages_location} import {message} as MSG")

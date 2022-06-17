@@ -3,23 +3,12 @@ import time
 from PIL import Image
 from dataclasses import dataclass
 
+from exceptionpack.exception_handler import handle_exception
 import qrcode
 
-
-def ExceptionHandler(func):
-    def wrapper(*args, **kwargs):
-        qr = args[0]
-        try:
-            message = None
-            func(args, kwargs)
-        except FileNotFoundError as error:
-            message = error
-
-        if qr._ExceptionHandler and message is not None:
-            print(error)
-        return qr
-    return wrapper
-
+class MissingQRColorError(ValueError):
+    def __init__(self, *args: object) -> None:
+        super().__init__(*args)
 
 @dataclass
 class QR:
@@ -30,7 +19,7 @@ class QR:
         self._debug = debug
 
     # aggiunge il logo passato al QR
-    @ExceptionHandler
+    @handle_exception
     def add_logo(self, logo: str, dim: int):
         logo_display = Image.open(logo)
         logo_display.thumbnail((dim, dim))
@@ -40,10 +29,10 @@ class QR:
         return self
 
     # aggiunge i dati passati al QR
-    @ExceptionHandler
-    def add_data(self, data: str, fill_col: tuple, back_col: tuple = None):
+    @handle_exception
+    def add_data(self, data: str, fill_col: tuple = None, back_col: tuple = None):
         if back_col is None:
-            back_col = fill_col
+            raise MissingQRColorError
         # creates a qr code obj
         qr = qrcode.QRCode(version=1,
                            error_correction=qrcode.constants.ERROR_CORRECT_L,
@@ -56,7 +45,7 @@ class QR:
         return self
 
     # generates a QR from the user input
-    @ExceptionHandler
+    @handle_exception
     def generate(self, name: str, path: str):
         if not name:
             name = f"next_qr_{time.strftime('%H%M%S')}.png"

@@ -1,9 +1,9 @@
 from distutils.command.config import config
 import os
-from PIL import Image
 
 from messagehandler.message_handler import MessageHandler
-from ios.iostream import ExceptionsHandler, IOstream, Configuration, Log
+from exceptionpack.exception_handler import handle_exception
+from ios.iostream import IOstream, Configuration, Log
 import src.constants as C
 
 
@@ -13,14 +13,14 @@ msg = MessageHandler(debug=True)
 # un nuovo valore per il parametro (include messaggi di aggiornamento a schermo)
 
 
-@ExceptionsHandler
+@handle_exception
 def update_parameter(parameter: str, param_value: any) -> str:
     msg.clsprint("SETT_CONFIGURATION", color="cyan")
     return msg.myprint(f"{config}\n REDEFINE → {parameter}({param_value}): ", color="cyan", input=True)
 
 
 # resetta il file di configurazione e, se l'operazione ha successo, visualizza a video un messaggio di aggiornamento
-@ExceptionsHandler
+@handle_exception
 def reset(config: Configuration) -> None:
     config['APP']['output_directory'] = ""
     config['APP']['input_directory'] = ""

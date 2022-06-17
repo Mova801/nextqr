@@ -46,7 +46,6 @@ class File:
     _readlines: str
     _readline: str
     _debug: bool = False
-    
 
     def __init__(self, filename: str, **kwargs: any):
         self._path = kwargs.get("path", "")
@@ -179,7 +178,8 @@ class Configuration(ConfigParser):
 
     def __init__(self, filename: str = "", **kwargs: dict) -> None:
         self._path = kwargs.get("path", "")
-        self._filename = IOstream.join_path(self._path, IOstream.invalid_char(filename))
+        self._filename = IOstream.join_path(
+            self._path, IOstream.invalid_char(filename))
         self._debug = kwargs.get("debug", False)
         return super().__init__()
 
@@ -195,7 +195,7 @@ class Configuration(ConfigParser):
             self.write(cf)
         return self
 
-        
+
 @dataclass
 class IOstream:
     def __init__(self, debug=None):
