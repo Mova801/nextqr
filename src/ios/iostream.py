@@ -4,6 +4,7 @@ import json
 import time
 import ctypes
 from configparser import ConfigParser
+from pathlib import Path
 
 import webbrowser as wb
 
@@ -219,24 +220,7 @@ class IOstream:
     @classmethod
     def mkdir(cls, path: str) -> bool:
         """create a new folder in the given path"""
-        try:
-            os.mkdir(path)
-            return True
-        except FileExistsError:
-            return False
-
-    @classmethod
-    def mkdirs(cls, path: str) -> bool:
-        """create a new folder in the given path"""
-        try:
-            directories = path.split("\\")
-            path = ""
-            for dir in directories:
-                path = IOstream.join_path(path, dir)
-                IOstream.mkdir(path)
-            return True
-        except FileExistsError:
-            return False
+        return Path(path).mkdir(parents=True, exist_ok=True)
 
     @classmethod
     def open_link(cls, link: str) -> None:
