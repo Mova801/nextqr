@@ -2,12 +2,17 @@ from distutils.command.config import config
 import os
 
 from messagehandler.message_handler import MessageHandler
+<<<<<<< Updated upstream
 from exceptionpack.exception_handler import handle_exception
 from ios.iostream import IOstream, Configuration, Log
 import src.constants as C
+=======
+from ios.iostream import ExceptionsHandler, IOstream, Configuration, Log
+from src.constants import MESSAGES_PATH, MAX_PAGES
+>>>>>>> Stashed changes
 
 
-msg = MessageHandler(debug=True)
+msg = MessageHandler(debug=True, _import=MESSAGES_PATH)
 
 # data una stringa che identifica un parametro del file di conf, e dato il rispettivo valore, chiede all'utente
 # un nuovo valore per il parametro (include messaggi di aggiornamento a schermo)
@@ -41,7 +46,7 @@ def app_settings() -> None:
     config = Configuration()
     config.load("src\\nextqr.ini")
     version = config['APP'].get("version", "")
-    # if the right version (password) is entered then continue else return
+    # if the right password (current version) is entered then continue else return
     if msg.myprint("@_> ", color="cyan", input=True) != version:
         return
 
@@ -53,8 +58,6 @@ def app_settings() -> None:
         current_page = 1
         while True:
             msg.print(f"MENU_PAG{current_page}", clear=True)
-            #dec.pretty("CURRENT_current_page", color="green", clear=True, format=[current_page, max_current_page])
-
             menu_input = msg.myprint(" ► ", color="magenta", input=True)
 
             # options
@@ -66,7 +69,7 @@ def app_settings() -> None:
                 # opzione che scorre alla pagina successiva
                 case ">":
 
-                    if current_page < C.MAX_PAGES:
+                    if current_page < MAX_PAGES:
                         current_page += 1
                         continue
 
