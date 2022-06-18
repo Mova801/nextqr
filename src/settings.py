@@ -2,14 +2,9 @@ from distutils.command.config import config
 import os
 
 from messagehandler.message_handler import MessageHandler
-<<<<<<< Updated upstream
-from exceptionpack.exception_handler import handle_exception
 from ios.iostream import IOstream, Configuration, Log
-import src.constants as C
-=======
-from ios.iostream import ExceptionsHandler, IOstream, Configuration, Log
 from src.constants import MESSAGES_PATH, MAX_PAGES
->>>>>>> Stashed changes
+from exceptionpack.exception_handler import handle_exception
 
 
 msg = MessageHandler(debug=True, _import=MESSAGES_PATH)
