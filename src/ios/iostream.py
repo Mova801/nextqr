@@ -7,34 +7,28 @@ from configparser import ConfigParser
 from pathlib import Path
 
 import webbrowser as wb
-
 from dataclasses import dataclass
-from termcolor import cprint
+
 
 DESKTOP: str = os.path.join(os.path.join(os.environ['USERPROFILE']), 'Desktop')
 
 # lib info
 __email__: str = "imova2882@gmail.com"
-__version__: str = "0.4.0"
+__version__: str = "0.4.1"
 __author__: str = "Mova801"
 
 
-def ExceptionsHandler(func):
-    def wrapper(*args, **kwargs):
-        cls = args[0]
-        try:
-            message = None
-            func(*args, **kwargs)
-        except FileNotFoundError as error:
-            message = error
-        except TypeError as error:
-            message = error
-        except json.JSONDecodeError as error:
-            message = error
-        if cls._debug and message is not None:
-            cprint(message, "red")
-        return cls
-    return wrapper
+class InvalidPathError(Exception):
+    _path: str
+    _message: str
+
+    def __init__(self, path: str = "", message: str = "The given value is not a valid path!"):
+        self._path = path
+        self._message = message
+        super().__init__(self._message)
+
+    def __str__(self):
+        return f'{self._path} -> {self._message}'
 
 
 @dataclass
@@ -59,7 +53,6 @@ class File:
         self._readline = kwargs.get("readline", False)
 
     # legge la prima riga di un file
-    @ExceptionsHandler
     def read(self):
         path: str = IOstream.join_path(self._path, self._filename)
         with open(path, self._mode, encoding=self._encoding) as f:
@@ -72,7 +65,6 @@ class File:
         return self
 
     # crea un file e ci scrive dentro i dati presenti nell'istanza File corrente (<=)
-    @ExceptionsHandler
     def write(self, data: str = None):
         if data is None:
             data = self._data
@@ -125,7 +117,6 @@ class JSONFile(File):
         super().__init__(filename, **kwargs)
 
     # legge un file json, ne legge i dati e li salva in un istanza File
-    @ExceptionsHandler
     def read(self):
         path: str = IOstream.join_path(self._path, self._filename)
         with open(path, 'r', encoding=self._encoding) as f:
@@ -133,7 +124,6 @@ class JSONFile(File):
         return self
 
     # crea un file json e ci scrive dentro i dati presenti nell'istanza File corrente
-    @ExceptionsHandler
     def write(self, data: str = None):
         if data is None:
             data = self._data
@@ -145,26 +135,19 @@ class JSONFile(File):
 
 # Log class inherit from File
 #   a Log is a File which create 2 directories and a file in append mode
-#       dir 1: contains the daily logs directories
+#       dir 1: contains the daily logs dirs
 #       dir 2: daily directory (every day a new one is generated)
 #   in the log file are stored data
 #
 #   [!]: each time new informations are added the log write on file!
 
 class Log(File):
-    _log_dir_1: str
-    _log_dir_2: str
     _log_path: str
 
-    def __init__(self, filename: str, **kwargs: dict) -> None:
-        self._log_dir_1 = IOstream.invalid_char(kwargs.get("dir1", "LOG"))
-        self._log_dir_2 = IOstream.invalid_char(
-            kwargs.get("dir2", f"log_{IOstream.get_date()}"))
-        IOstream.mkdir(self._log_dir_1)
-        log_path = IOstream.join_path(self._log_dir_1, self._log_dir_2)
-        IOstream.mkdir(log_path)
-
-        super().__init__(filename + ".log", mode='a', path=log_path)
+    def __init__(self, filename: str, path: str) -> None:
+        self._path = path
+        IOstream.mkdir(path)
+        super().__init__(filename + ".log", mode='a', path=path)
 
     def log(self, data: str = None):
         if data is None:
@@ -179,18 +162,15 @@ class Configuration(ConfigParser):
 
     def __init__(self, filename: str = "", **kwargs: dict) -> None:
         self._path = kwargs.get("path", "")
-        self._filename = IOstream.join_path(
-            self._path, IOstream.invalid_char(filename))
+        self._filename = IOstream.join_path(self._path, IOstream.invalid_char(filename))
         self._debug = kwargs.get("debug", False)
         return super().__init__()
 
-    @ExceptionsHandler
     def load(self, filename: str):
         self._filename = IOstream.join_path(self._path, filename)
         self.read(self._filename)
         return self
 
-    @ExceptionsHandler
     def save(self):
         with open(self._filename, 'w') as cf:
             self.write(cf)
@@ -221,6 +201,27 @@ class IOstream:
     def mkdir(cls, path: str) -> bool:
         """create a new folder in the given path"""
         return Path(path).mkdir(parents=True, exist_ok=True)
+
+    @classmethod
+    def is_file(cls, path) -> bool:
+        if isinstance(path, str):
+            return Path(path).is_file()
+        else:
+            raise FileNotFoundError
+
+    @classmethod
+    def is_dir(cls, path) -> bool:
+        if isinstance(path, str):
+            return Path(path).is_dir()
+        else:
+            raise NotADirectoryError
+
+    @classmethod
+    def exists(cls, path):
+        if isinstance(path, str):
+            return Path(path).exists()
+        else:
+            raise InvalidPathError(path)
 
     @classmethod
     def open_link(cls, link: str) -> None:
