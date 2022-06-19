@@ -1,26 +1,23 @@
-from distutils.command.config import config
 import os
 
-from messagehandler.message_handler import MessageHandler
-from ios.iostream import IOstream, Configuration, Log
-from src.constants import MESSAGES_PATH, MAX_PAGES
-from exceptionpack.exception_handler import handle_exception
+from LIB.messagehandler.message_handler import MessageHandler
+from LIB.ios.iostream import IOstream, Configuration, Log
+from src.constants import MAX_PAGES
+from LIB.exceptionpack.exception_handler import handle_exceptions
 
 
-msg = MessageHandler(debug=True, _import=MESSAGES_PATH)
-
-# data una stringa che identifica un parametro del file di conf, e dato il rispettivo valore, chiede all'utente
-# un nuovo valore per il parametro (include messaggi di aggiornamento a schermo)
-
-
-@handle_exception
-def update_parameter(parameter: str, param_value: any) -> str:
+@handle_exceptions
+def update_parameter(config: Configuration, parameter: str, param_value: any) -> str:
+    """
+    Data una stringa che identifica un parametro del file di conf, e dato il rispettivo valore, chiede all'utente
+    un nuovo valore per il parametro (include messaggi di aggiornamento a schermo)
+    """
     msg.clsprint("SETT_CONFIGURATION", color="cyan")
     return msg.myprint(f"{config}\n REDEFINE → {parameter}({param_value}): ", color="cyan", input=True)
 
 
 # resetta il file di configurazione e, se l'operazione ha successo, visualizza a video un messaggio di aggiornamento
-@handle_exception
+@handle_exceptions
 def reset(config: Configuration) -> None:
     config['APP']['output_directory'] = ""
     config['APP']['input_directory'] = ""
@@ -36,8 +33,9 @@ def reset(config: Configuration) -> None:
         IOstream.get_time()
 
 
-def app_settings() -> None:
-
+def app_settings(msg_: MessageHandler) -> None:
+    global msg
+    msg = msg_
     config = Configuration()
     config.load("src\\nextqr.ini")
     version = config['APP'].get("version", "")
@@ -99,7 +97,7 @@ def app_settings() -> None:
                     else:
                         color_opt = "back_color"
                     color = config['QR'].get(color_opt, (0, 0, 0))
-                    color = update_parameter(color_opt, color)
+                    color = update_parameter(config, color_opt, color)
                     if not isinstance(color, tuple) and len(color) != 3:
                         config['QR'][color_opt] = color
                         config.save()
@@ -115,7 +113,7 @@ def app_settings() -> None:
                 case "qr:logo":
                     logo_dim = config['QR'].get("logo_dim", 60)
                     try:
-                        logo_dim = update_parameter("logo_dim", logo_dim)
+                        logo_dim = update_parameter(config, "logo_dim", logo_dim)
                     except ValueError as error:
                         log.log(error)
                         msg.print("ERR_INV_INPUT")
@@ -132,7 +130,7 @@ def app_settings() -> None:
                     else:
                         dir_opt = "input_directory"
                     dir = config['APP'].get(dir_opt, (0, 0, 0))
-                    dir = update_parameter(dir_opt, dir)
+                    dir = update_parameter(config, dir_opt, dir)
                     if os.path.isdir(dir) or not dir:
                         config['APP'][dir_opt] = dir
                         config.save()
@@ -150,7 +148,7 @@ def app_settings() -> None:
                     else:
                         cons_opt = "height"
                     cons = config['APP'].get(cons_opt, 65)
-                    cons = int(update_parameter(f"c{cons_opt}", cons))
+                    cons = int(update_parameter(config, f"c{cons_opt}", cons))
                     if isinstance(cons, int):
                         config['APP'][cons_opt] = cons
                         config.save()
@@ -164,7 +162,7 @@ def app_settings() -> None:
                 case "cam:showcam":
                     cam = config['APP'].get("show_camera", True)
                     try:
-                        cam = bool(update_parameter(f"c{menu_input}", cam))
+                        cam = bool(update_parameter(config, f"c{menu_input}", cam))
                     except ValueError as error:
                         log.log(error)
                         msg.print("ERR_INV_INPUT")

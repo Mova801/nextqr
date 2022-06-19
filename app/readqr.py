@@ -1,13 +1,12 @@
 from imagestream.imagestream import ImageStream
-from ios.iostream import IOstream, Configuration, File
-from messagehandler.message_handler import MessageHandler
-from keyboardhandler.keyboard_handler import KeyboardHandler
-from src.constants import CONF_LOCATION, MAIN_READQR_KEYS, MESSAGES_PATH, SCAN_WINDOW_NAME
+from LIB.ios.iostream import IOstream, Configuration, File
+from LIB.messagehandler.message_handler import MessageHandler
+from LIB.keyboardhandler.keyboard_handler import KeyboardHandler
+from src.constants import CONF_LOCATION, MAIN_READQR_KEYS, SCAN_WINDOW_NAME
 
 from validators import url
 
 
-msg = MessageHandler(debug=True, _import=MESSAGES_PATH)
 key = KeyboardHandler(MAIN_READQR_KEYS)
 
 
@@ -85,7 +84,9 @@ def read_qr_from_file() -> None:
     IOstream.clear_terminal()
 
 
-def read_qr() -> None:
+def read_qr(msg_: MessageHandler) -> None:
+    global msg
+    msg = msg_
     key.listen()
     msg.print("QREAD_MENU", clear=True)
     while True:
