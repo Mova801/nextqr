@@ -1,4 +1,4 @@
-from imagestream.imagestream import ImageStream
+from LIB.imagestream.imagestream import ImageStream
 from LIB.ios.iostream import IOstream, Configuration, File
 from LIB.messagehandler.message_handler import MessageHandler
 from LIB.keyboardhandler.keyboard_handler import KeyboardHandler
@@ -56,7 +56,7 @@ def camera_main() -> None:
         return
     msg.print("QREAD_SAVE_DATA")
     save_data_found(data, out_dir)
-    IOstream.check_if_link(data)
+    check_if_link(data)
     IOstream.clear_terminal()
 
 
@@ -69,7 +69,7 @@ def read_qr_from_file() -> None:
     out_dir = (config['APP'].get("output_directory"))
     filename = IOstream.join_path(in_dir, filename)
     img = ImageStream()
-    if not img.open_image(filename):
+    if not img.cv2_open(filename):
         msg.clsprint("QREAD_ERR_FILE", color="red")
         return
     data = img.search_qr()
@@ -80,7 +80,7 @@ def read_qr_from_file() -> None:
     msg.print("QREAD_DATA_QR", add=data)
     msg.print("QREAD_SAVE_DATA")
     save_data_found(data, out_dir)
-    IOstream.check_if_link(data)
+    check_if_link(data)
     IOstream.clear_terminal()
 
 
@@ -90,7 +90,7 @@ def read_qr(msg_: MessageHandler) -> None:
     key.listen()
     msg.print("QREAD_MENU", clear=True)
     while True:
-        match key.get_input():
+        match key.input:
             case 'c':
                 key.pause()
                 key.press_key()
