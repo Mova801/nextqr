@@ -9,7 +9,7 @@ sys.path.append(
 from genqr import generate_qr
 from readqr import read_qr
 from settings import app_settings
-from LIB.keyboardhandler.keyboard_handler import KeyboardHandler
+from LIB.zkeyboardhandler.keyboard_handler import KeyboardHandler
 from LIB.messagehandler.message_handler import MessageHandler
 from LIB.ios.iostream import IOstream, Configuration
 from src.constants import CONF_LOCATION, MAIN_KEYS

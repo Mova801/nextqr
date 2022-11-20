@@ -1,0 +1,8 @@
+app:
+  build: 0.0.0.0
+  name: NextQR
+  version: 0.0.1
+path:
+  icons: ${hydra.runtime.cws}/src/icons/
+link:
+  github: https://github.com/Mova801

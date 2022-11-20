@@ -1,0 +1,1 @@
+from new.conf import config

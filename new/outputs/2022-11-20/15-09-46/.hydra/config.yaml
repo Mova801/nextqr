@@ -1,0 +1,19 @@
+app:
+  build: 0.0.0.0
+  name: NextQR
+  version: 0.0.1
+  auto_build: false
+screen:
+  size: 600x400
+  resizable_width: true
+  resizable_height: true
+  appearance_mode: dark
+  color_theme: blue
+fonts:
+  roboto: Roboto Medium
+path:
+  icons: ${hydra.runtime.cws}/src/icons/
+image:
+  logo: ${hydra.runtime.cws}/src/icons/logo.ico
+link:
+  github: https://github.com/Mova801
