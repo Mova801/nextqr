@@ -1,7 +1,8 @@
 import customtkinter as ct
 
-from new.app.left_frame import build_left_frame
+from new.app import elements
 from new.conf.config import NextQrConfig
+from new.utility import utility_functions
 
 
 class App:
@@ -32,7 +33,9 @@ class App:
         self.set_appearance_mode(config.screen.appearance_mode)
         self.set_color_theme(config.screen.color_theme)
 
+        self.rf_generating: bool = False
         self.lf = None
+        self.rf = None
         # ...
         if config.app.auto_build:
             self.build()
@@ -57,15 +60,27 @@ class App:
         """Builds the application layout."""
         self.gui.grid_columnconfigure(1, weight=1)
         self.gui.grid_rowconfigure(0, weight=1)
-        build_left_frame(self)
+        # left frame
+        elements.left_frame.build_left_frame(self)
+        # default right frames
+        elements.right_frame.build_right_frame_generate(self)
+        self.rf_generating = True
 
-    def generate_button_event(self) -> None:
-        """Handles the left frame generate button click."""
-        print("Generate button clicked!")
+    def generate_button_clik_event(self) -> None:
+        """Handles the left frame 'generate' button click."""
+        if not self.rf_generating:
+            elements.right_frame.build_right_frame_generate(self)
+            self.rf_generating = True
 
-    def read_button_event(self) -> None:
-        """Handles the left frame generate button click."""
-        print("Read button clicked!")
+    def read_button_clik_event(self) -> None:
+        """Handles the left frame 'read' button click."""
+        if self.rf_generating:
+            elements.right_frame.build_right_frame_read(self)
+            self.rf_generating = False
+
+    def follow_dev_clik_event(self) -> None:
+        """Handles the left frame 'follow dev' button click"""
+        utility_functions.open_link(self.config.link.github)
 
     def run(self) -> None:
         """Runs the application instance."""

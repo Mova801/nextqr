@@ -31,7 +31,9 @@ class Path:
 
 @dataclass
 class Image:
+    size: int
     logo: str
+    github: str
 
 
 @dataclass
@@ -47,8 +49,15 @@ class Button:
 
 
 @dataclass
+class Entry:
+    width: int
+    height: int
+
+
+@dataclass
 class Layout:
     button: Button
+    entry: Entry
 
 
 @dataclass

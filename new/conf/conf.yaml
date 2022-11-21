@@ -2,9 +2,9 @@ defaults:
   - layout: layout
   - _self_
 app:
-  build: 0.0.0.0
+  build: 21.11.2022
   name: NextQR
-  version: 0.0.1
+  version: .alpha-0.0.1
   auto_build: False
 screen:
   size: 900x600
@@ -18,6 +18,8 @@ font:
 path:
   icons: src/icons/
 image:
+  size: 32
   logo: src/icons/logo.ico
+  github: src/icons/github.png
 link:
   github: https://github.com/Mova801

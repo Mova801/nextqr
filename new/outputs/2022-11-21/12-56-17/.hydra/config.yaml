@@ -1,0 +1,30 @@
+layout:
+  button:
+    width: 80
+    height: 35
+    img_position: left
+  entry:
+    width: 250
+    height: 35
+app:
+  build: 21.11.2022
+  name: NextQR
+  version: .alpha-0.0.1
+  auto_build: false
+screen:
+  size: 900x600
+  resizable_width: false
+  resizable_height: false
+  appearance_mode: dark
+  color_theme: blue
+font:
+  size: 10
+  roboto: Roboto Medium
+path:
+  icons: src/icons/
+image:
+  size: 32
+  logo: src/icons/logo.ico
+  github: src/icons/github.png
+link:
+  github: https://github.com/Mova801

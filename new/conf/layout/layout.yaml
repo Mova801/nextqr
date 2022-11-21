@@ -2,3 +2,6 @@ button:
   width: 80
   height: 35
   img_position: left
+entry:
+  width: 250
+  height: 35
