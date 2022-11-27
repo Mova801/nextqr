@@ -12,7 +12,12 @@ CONFIG_FILE: str = "conf"
 
 def main() -> None:
     """Creates and runs a new app."""
-    config = load_nextqr_configuration(filename=CONFIG_FILE, path=CONFIG_PATH)
+    config = None
+    try:
+        config = load_nextqr_configuration(filename=CONFIG_FILE, path=CONFIG_PATH)
+    except FileNotFoundError as e:
+        print(e)
+        exit(0)
     app = App(config)
     app.build()
     app.run()

@@ -5,7 +5,7 @@ from new.conf.image_config import AvailableImages
 from new.app.app import App
 
 
-def _build_left_frame_buttons(app, frame_width: int, rows: int) -> None:
+def _build_left_frame_buttons(app: App, frame_width: int, rows: int) -> None:
     """
     Builds the left frame option buttons.
     :param app: master of the frame
@@ -83,7 +83,7 @@ def _build_left_frame_buttons(app, frame_width: int, rows: int) -> None:
         image=app.images[AvailableImages.BUG.value],
         compound=app.config.layout.button.img_position
     )
-    app.lf_btn_generate.grid(row=rows - 1, column=0, sticky="e", padx=app.config.layout.left_frame.inner_padx // 2)
+    app.lf_btn_generate.grid(row=rows - 1, column=0, sticky="e", padx=app.config.layout.left_frame.inner_padx)
 
 
 def build_left_frame(app: App) -> ct.CTkFrame:

@@ -42,7 +42,7 @@ def build_image_frame(app: App, row_index: int) -> None:
         sticky="w"
     )
 
-    # ============ image frame button 'browse' ============
+    # ============ image frame <browse> button ============
     app.imf_btn_validate_img_path = ct.CTkButton(
         master=app.rf_frame_image,
         width=app.config.layout.button.width // 2,
