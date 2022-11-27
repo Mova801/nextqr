@@ -51,7 +51,7 @@ def build_right_frame_generate(app: App) -> ct.CTkFrame:
         text=entry_qrname_text,
         text_font=(app.config.font.roboto, int(app.config.font.title_size_M))
     )
-    app.rf_label_title.grid(row=ri+1, column=0, padx=app.config.layout.right_frame.inner_padx, sticky="w")
+    app.rf_label_title.grid(row=ri + 1, column=0, padx=app.config.layout.right_frame.inner_padx, sticky="w")
 
     # ============ right frame entry qr name ============
     app.rf_entry_name = ct.CTkEntry(
@@ -61,7 +61,7 @@ def build_right_frame_generate(app: App) -> ct.CTkFrame:
         placeholder_text=entry_qrname_text,
         text_font=(app.config.font.roboto, app.config.font.size_M),
     )
-    app.rf_entry_name.grid(row=ri+2, column=0, padx=app.config.layout.right_frame.inner_padx * 1.5, sticky="w")
+    app.rf_entry_name.grid(row=ri + 2, column=0, padx=app.config.layout.right_frame.inner_padx * 1.5, sticky="w")
 
     # ============ right frame label qr content ============
     app.rf_label_title = ct.CTkLabel(
@@ -69,7 +69,7 @@ def build_right_frame_generate(app: App) -> ct.CTkFrame:
         text=label_qrcontent_text,
         text_font=(app.config.font.roboto, int(app.config.font.title_size_M))
     )
-    app.rf_label_title.grid(row=ri+3, column=0, padx=app.config.layout.right_frame.inner_padx, sticky="w")
+    app.rf_label_title.grid(row=ri + 3, column=0, padx=app.config.layout.right_frame.inner_padx, sticky="w")
 
     # ============ right frame textbox qr content ============
     app.rf_textbox_content = ct.CTkTextbox(
@@ -78,7 +78,7 @@ def build_right_frame_generate(app: App) -> ct.CTkFrame:
         height=app.config.layout.textbox.height,
         text_font=(app.config.font.roboto, app.config.font.size_M),
     )
-    app.rf_textbox_content.grid(row=ri+4, column=0, padx=app.config.layout.right_frame.inner_padx * 1.5, sticky="w")
+    app.rf_textbox_content.grid(row=ri + 4, column=0, padx=app.config.layout.right_frame.inner_padx * 1.5, sticky="w")
     app.rf_textbox_content.insert("0.0", textbox_qrcontent_text)
 
     # ============ right frame label image select ============
@@ -87,10 +87,10 @@ def build_right_frame_generate(app: App) -> ct.CTkFrame:
         text=label_image_select_text,
         text_font=(app.config.font.roboto, int(app.config.font.title_size_M))
     )
-    app.rf_label_title.grid(row=ri+5, column=0, padx=app.config.layout.right_frame.inner_padx, sticky="w")
+    app.rf_label_title.grid(row=ri + 5, column=0, padx=app.config.layout.right_frame.inner_padx, sticky="w")
 
     # ============ right frame image frame ============
-    build_image_frame(app)
+    build_image_frame(app, ri + 6)
 
     return app.rf
 

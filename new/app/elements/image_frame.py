@@ -4,10 +4,11 @@ from new.app.app import App
 from new.utility.colors import Color
 
 
-def build_image_frame(app: App) -> None:
+def build_image_frame(app: App, row_index: int) -> None:
     """
     Builds the layout of the image frame used to read qr image path and display the image.
     :param app: master of the frame
+    :param row_index: image_frame row index
     :return: None
     """
     entry_path_text: str = "Enter Image Path"
@@ -18,9 +19,9 @@ def build_image_frame(app: App) -> None:
         master=app.rf,
         width=app.config.layout.image_frame.width,
         height=app.config.layout.image_frame.height,
-        fg_color=Color.DARK_GRAY.value
+        # fg_color=Color.DARK_GRAY.value
     )
-    app.rf_frame_image.grid(row=6, column=0, padx=app.config.layout.right_frame.inner_padx)
+    app.rf_frame_image.grid(row=row_index, column=0, padx=app.config.layout.right_frame.inner_padx)
 
     # ============ right frame grid setup: 1x2 ============
     col_number: int = 2
@@ -41,7 +42,7 @@ def build_image_frame(app: App) -> None:
         sticky="w"
     )
 
-    # ============ image frame entry img path ============
+    # ============ image frame button 'browse' ============
     app.imf_btn_validate_img_path = ct.CTkButton(
         master=app.rf_frame_image,
         width=app.config.layout.button.width // 2,

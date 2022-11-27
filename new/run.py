@@ -2,30 +2,21 @@
 Created by Marco Vita (aka Mova801) on 16/09/2022
 Module that runs NextQR app.
 """
-import hydra
-from hydra.core.config_store import ConfigStore
-from hydra import MissingConfigException
 
 from app.app import App
-from conf.config import NextQrConfig
+from new.conf.tomlconf import load_nextqr_configuration
 
 CONFIG_PATH: str = "conf"
-CONFIG_FILE: str = "conf.yaml"
-
-cf = ConfigStore.instance()
-cf.store(name="nextqr_config", node=NextQrConfig)
+CONFIG_FILE: str = "conf"
 
 
-@hydra.main(config_path=CONFIG_PATH, config_name=CONFIG_FILE, version_base="1.2")
-def main(config) -> None:
+def main() -> None:
     """Creates and runs a new app."""
+    config = load_nextqr_configuration(filename=CONFIG_FILE, path=CONFIG_PATH)
     app = App(config)
     app.build()
     app.run()
 
 
 if __name__ == '__main__':
-    try:
-        main()
-    except MissingConfigException as e:
-        print(e)
+    main()

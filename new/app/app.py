@@ -4,6 +4,7 @@ import customtkinter as ct
 from new.app import elements
 from new.conf.config import NextQrConfig
 from new.conf.image_config import image_list_from_config
+from new.exceptions import nextqr_exceptions
 from new.utility import utility_functions
 
 images_dict = dict[str, PIL.ImageTk]
@@ -41,13 +42,14 @@ class App:
         self.set_color_theme(config.screen.color_theme)
 
         self.images: images_dict = utility_functions.load_images(image_list_from_config(self.config.image))
-        print(self.images)
         self.rf_generating: bool = False
         self.lf: ct.CTkFrame = ...
         self.rf: ct.CTkFrame = ...
         # ...
         if config.app.auto_build:
+            self.config.app.auto_build = False
             self.build()
+            self.config.app.auto_build = True
 
     def set_appearance_mode(self, appearance_mode: str) -> None:
         """Changes the appearance of the application."""
@@ -67,6 +69,9 @@ class App:
 
     def build(self) -> any:
         """Builds the application layout."""
+        if self.config.app.auto_build:
+            raise nextqr_exceptions.AutoBuildEnabledError
+
         # load app image
         # set gui grid
         self.gui.grid_columnconfigure(1, weight=1)
