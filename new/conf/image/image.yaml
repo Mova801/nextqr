@@ -1,0 +1,8 @@
+logo:
+  path: src/images/logo.ico
+github:
+  size: 32
+  path: src/images/github.png
+bug:
+  size: 22
+  path: src/images/bug.png

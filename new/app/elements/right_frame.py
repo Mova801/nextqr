@@ -1,6 +1,9 @@
 import customtkinter as ct
+import tkinter as tk
 
 from new.app.app import App
+from new.app.elements.image_frame import build_image_frame
+from new.utility.colors import Color
 
 
 def build_right_frame_generate(app: App) -> ct.CTkFrame:
@@ -9,68 +12,110 @@ def build_right_frame_generate(app: App) -> ct.CTkFrame:
     :param app: master of the frame
     :return: right frame
     """
-    scale_factor: int = 5
-    rf_padding: int = 10
-    rf_corner_radius: int = 15
-    rf_inner_padx: int = 20
+    label_title_text: str = "Generate QR Code"
+    entry_qrname_text: str = "Enter QR Name"
+    label_qrcontent_text: str = "Enter QR Content"
+    textbox_qrcontent_text: str = "Hello QR!"
+    label_image_select_text: str = "Select QR Image"
 
     # ============ right frame setup ============
-    frame_width: int = int(app.config.screen.size.split("x")[0]) // scale_factor
-    app.rf = ct.CTkFrame(master=app.gui, width=frame_width, corner_radius=rf_corner_radius)
-    app.rf.grid(row=0, column=1, sticky="nsew", padx=rf_padding, pady=rf_padding)
+    frame_width: int = int(app.config.screen.size.split("x")[0]) // app.config.layout.right_frame.scale_factor
+    app.rf = ct.CTkFrame(master=app.gui, width=frame_width, corner_radius=app.config.layout.right_frame.corner_radius)
+    app.rf.grid(
+        row=0,
+        column=1,
+        sticky=app.config.layout.right_frame.sticky,
+        padx=app.config.layout.right_frame.padding,
+        pady=app.config.layout.right_frame.padding
+    )
 
-    # ============ right frame grid setup: 8x2 ============
-    row_number: int = 12
+    # ============ right frame grid setup: 12x2 ============
+    row_number: int = 8
     [app.rf.grid_rowconfigure(x, minsize=20, weight=1) for x in range(row_number)]
-    col_number: int = 2
+    col_number: int = 1
     [app.rf.grid_columnconfigure(x, minsize=20, weight=1) for x in range(col_number)]
+
+    ri: int = 0  # row index
 
     # ============ right frame title setup ============
     app.rf_label_title = ct.CTkLabel(
         master=app.rf,
-        text="Generate QR Code",
-        text_font=(app.config.font.roboto, int(app.config.font.size * 1.8))
+        text=label_title_text,
+        text_font=(app.config.font.roboto, int(app.config.font.title_size_L))
     )
-    app.rf_label_title.grid(row=0, column=0, padx=rf_inner_padx, sticky="w")
+    app.rf_label_title.grid(row=ri, column=0, padx=app.config.layout.right_frame.inner_padx, sticky="w")
+
+    # ============ right frame label qr name ============
+    app.rf_label_title = ct.CTkLabel(
+        master=app.rf,
+        text=entry_qrname_text,
+        text_font=(app.config.font.roboto, int(app.config.font.title_size_M))
+    )
+    app.rf_label_title.grid(row=ri+1, column=0, padx=app.config.layout.right_frame.inner_padx, sticky="w")
 
     # ============ right frame entry qr name ============
-    app.main_entry = ct.CTkEntry(
+    app.rf_entry_name = ct.CTkEntry(
         master=app.rf,
         width=app.config.layout.entry.width,
         height=app.config.layout.entry.height,
-        placeholder_text="Enter QR name",
-        text_font=(app.config.font.roboto, app.config.font.size),
+        placeholder_text=entry_qrname_text,
+        text_font=(app.config.font.roboto, app.config.font.size_M),
     )
-    app.main_entry.grid(row=1, column=0, padx=rf_inner_padx, sticky="w")
+    app.rf_entry_name.grid(row=ri+2, column=0, padx=app.config.layout.right_frame.inner_padx * 1.5, sticky="w")
 
-    # ============ right frame entry qr content ============
-    app.main_entry = ct.CTkEntry(
+    # ============ right frame label qr content ============
+    app.rf_label_title = ct.CTkLabel(
         master=app.rf,
-        width=app.config.layout.entry.width,
-        height=app.config.layout.entry.height,
-        placeholder_text="Enter QR content",
-        text_font=(app.config.font.roboto, app.config.font.size),
+        text=label_qrcontent_text,
+        text_font=(app.config.font.roboto, int(app.config.font.title_size_M))
     )
-    app.main_entry.grid(row=2, column=0, padx=rf_inner_padx, sticky="w")
+    app.rf_label_title.grid(row=ri+3, column=0, padx=app.config.layout.right_frame.inner_padx, sticky="w")
+
+    # ============ right frame textbox qr content ============
+    app.rf_textbox_content = ct.CTkTextbox(
+        master=app.rf,
+        width=app.config.layout.textbox.width,
+        height=app.config.layout.textbox.height,
+        text_font=(app.config.font.roboto, app.config.font.size_M),
+    )
+    app.rf_textbox_content.grid(row=ri+4, column=0, padx=app.config.layout.right_frame.inner_padx * 1.5, sticky="w")
+    app.rf_textbox_content.insert("0.0", textbox_qrcontent_text)
+
+    # ============ right frame label image select ============
+    app.rf_label_title = ct.CTkLabel(
+        master=app.rf,
+        text=label_image_select_text,
+        text_font=(app.config.font.roboto, int(app.config.font.title_size_M))
+    )
+    app.rf_label_title.grid(row=ri+5, column=0, padx=app.config.layout.right_frame.inner_padx, sticky="w")
+
+    # ============ right frame image frame ============
+    build_image_frame(app)
 
     return app.rf
 
 
-def build_right_frame_read(app: App) -> ct.CTkFrame:
+def build_right_frame_read(app) -> ct.CTkFrame:
     """
     Builds the layout of the right frame used to read an existent qr code, either from camera or file.
     :param app: master of the frame
     :return: right frame
     """
-    scale_factor: int = 5
-    rf_padding: int = 10
-    rf_corner_radius: int = 15
-    rf_inner_padx: int = 20
+
+    label: str = "Read QR from file"
+    read_cam_btn_text: str = "Read QR from camera"
+    follow_dev_btn_text: str = "Follow Dev"
 
     # ============ right frame setup ============
-    frame_width: int = int(app.config.screen.size.split("x")[0]) // scale_factor
-    app.rf = ct.CTkFrame(master=app.gui, width=frame_width, corner_radius=rf_corner_radius)
-    app.rf.grid(row=0, column=1, sticky="nsew", padx=rf_padding, pady=rf_padding)
+    frame_width: int = int(app.config.screen.size.split("x")[0]) // app.config.layout.right_frame.scale_factor
+    app.rf = ct.CTkFrame(master=app.gui, width=frame_width, corner_radius=app.config.layout.right_frame.corner_radius)
+    app.rf.grid(
+        row=0,
+        column=1,
+        sticky=app.config.layout.right_frame.sticky,
+        padx=app.config.layout.right_frame.padding,
+        pady=app.config.layout.right_frame.padding
+    )
 
     # ============ right frame grid setup: 8x2 ============
     row_number: int = 12
@@ -82,18 +127,18 @@ def build_right_frame_read(app: App) -> ct.CTkFrame:
     app.rf_label_title = ct.CTkLabel(
         master=app.rf,
         text="Read QR Code",
-        text_font=(app.config.font.roboto, int(app.config.font.size * 1.8))
+        text_font=(app.config.font.roboto, int(app.config.font.title_size_L))
     )
-    app.rf_label_title.grid(row=0, column=0, padx=rf_inner_padx, sticky="w")
+    app.rf_label_title.grid(row=0, column=0, padx=app.config.layout.right_frame.inner_padx, sticky="w")
 
     # ============ right frame entry qr name ============
-    app.main_entry = ct.CTkEntry(
+    app.rf_entry_qrname = ct.CTkEntry(
         master=app.rf,
         width=app.config.layout.entry.width,
         height=app.config.layout.entry.height,
         placeholder_text="Enter QR file name (png)",
-        text_font=(app.config.font.roboto, app.config.font.size),
+        text_font=(app.config.font.roboto, app.config.font.size_M),
     )
-    app.main_entry.grid(row=1, column=0, padx=rf_inner_padx, sticky="w")
+    app.rf_entry_qrname.grid(row=1, column=0, padx=app.config.layout.right_frame.inner_padx, sticky="w")
 
     return app.rf

@@ -9,6 +9,17 @@ def open_image(image_name: str, size: int) -> PIL.ImageTk.PhotoImage:
     return PIL.ImageTk.PhotoImage(image)
 
 
+def load_images(images_to_load: list[dict[[str, int], [str, str]]]) -> dict[str, PIL.ImageTk]:
+    """Loads the image at the given path, each image has a size.
+    :param images_to_load: list of image to load (and path)
+    """
+    loaded_images = {}
+    for image in images_to_load:
+        image_key: str = image["path"].split("/")[-1][:-4]
+        loaded_images[image_key] = open_image(image["path"], image["size"])
+    return loaded_images
+
+
 def show_image(image_path: str) -> None:
     """Shows an image file on screen."""
     if image_path:

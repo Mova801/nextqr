@@ -1,8 +1,9 @@
 defaults:
   - layout: layout
+  - image: image
   - _self_
 app:
-  build: 21.11.2022
+  build: 27.11.2022
   name: NextQR
   version: .alpha-0.0.1
   auto_build: False
@@ -13,13 +14,12 @@ screen:
   appearance_mode: dark
   color_theme: blue
 font:
-  size: 10
+  size_S: 8
+  size_M: 10
+  title_size_M: 14
+  title_size_L: 18
   roboto: Roboto Medium
 path:
-  icons: src/icons/
-image:
-  size: 32
-  logo: src/icons/logo.ico
-  github: src/icons/github.png
+  icons: src/image/
 link:
   github: https://github.com/Mova801

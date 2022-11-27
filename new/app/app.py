@@ -1,8 +1,12 @@
+import PIL.ImageTk
 import customtkinter as ct
 
 from new.app import elements
 from new.conf.config import NextQrConfig
+from new.conf.image_config import image_list_from_config
 from new.utility import utility_functions
+
+images_dict = dict[str, PIL.ImageTk]
 
 
 class App:
@@ -18,11 +22,14 @@ class App:
     """
 
     def __init__(self, config: NextQrConfig) -> None:
-        self.running: bool = False
+        # controller [WIP]
+        self.controller = ...
+
+        # gui
         self.gui = ct.CTk()
         self.gui.title(config.app.name + " " + config.app.version)
         self.gui.geometry(config.screen.size)
-        self.gui.iconbitmap(config.image.logo)
+        self.gui.iconbitmap(config.image.logo.path)
         self.gui.resizable(config.screen.resizable_width, config.screen.resizable_height)
         self.gui.protocol("WM_DELETE_WINDOW", self.close)  # call self.close() when app gets closed
 
@@ -33,9 +40,11 @@ class App:
         self.set_appearance_mode(config.screen.appearance_mode)
         self.set_color_theme(config.screen.color_theme)
 
+        self.images: images_dict = utility_functions.load_images(image_list_from_config(self.config.image))
+        print(self.images)
         self.rf_generating: bool = False
-        self.lf = None
-        self.rf = None
+        self.lf: ct.CTkFrame = ...
+        self.rf: ct.CTkFrame = ...
         # ...
         if config.app.auto_build:
             self.build()
@@ -58,6 +67,8 @@ class App:
 
     def build(self) -> any:
         """Builds the application layout."""
+        # load app image
+        # set gui grid
         self.gui.grid_columnconfigure(1, weight=1)
         self.gui.grid_rowconfigure(0, weight=1)
         # left frame
@@ -79,8 +90,12 @@ class App:
             self.rf_generating = False
 
     def follow_dev_clik_event(self) -> None:
-        """Handles the left frame 'follow dev' button click"""
+        """Handles the left frame 'follow dev' button click."""
         utility_functions.open_link(self.config.link.github)
+
+    def browse_click_event(self) -> None:
+        """Handles the right frame 'browse' button click."""
+        print("Browse browse brose!")
 
     def run(self) -> None:
         """Runs the application instance."""

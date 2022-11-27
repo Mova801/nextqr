@@ -1,5 +1,8 @@
 from dataclasses import dataclass
 
+from new.conf.layout_config import Layout
+from new.conf.image_config import Image
+
 
 @dataclass
 class App:
@@ -20,7 +23,10 @@ class Screen:
 
 @dataclass
 class Font:
-    size: int
+    size_S: int
+    size_M: int
+    title_size_M: int
+    title_size_L: int
     roboto: str
 
 
@@ -30,34 +36,8 @@ class Path:
 
 
 @dataclass
-class Image:
-    size: int
-    logo: str
-    github: str
-
-
-@dataclass
 class Link:
     github: str
-
-
-@dataclass
-class Button:
-    width: int
-    height: int
-    img_position: str
-
-
-@dataclass
-class Entry:
-    width: int
-    height: int
-
-
-@dataclass
-class Layout:
-    button: Button
-    entry: Entry
 
 
 @dataclass
@@ -66,6 +46,6 @@ class NextQrConfig:
     screen: Screen
     font: Font
     path: Path
-    image: Image
     link: Link
     layout: Layout
+    image: Image
