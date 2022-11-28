@@ -1,12 +1,14 @@
 from dataclasses import dataclass
 import inspect
-from enum import Enum
+from enum import StrEnum, auto
 from typing import Any
 
 
-class AvailableImages(Enum):
-    GITHUB = "github"
-    BUG = "bug"
+class AvailableImages(StrEnum):
+    GITHUB = auto()
+    BUG = auto()
+    QR = auto()
+    SCAN = auto()
 
 
 @dataclass
@@ -27,10 +29,24 @@ class Bug:
 
 
 @dataclass
+class Qr:
+    size: int
+    path: str
+
+
+@dataclass
+class Scan:
+    size: int
+    path: str
+
+
+@dataclass
 class Image:
     logo: Logo
     github: Github
     bug: Bug
+    qr: Qr
+    scan: Scan
 
 
 def image_list_from_config(image: Image) -> list[dict[[str, int], [str, str]]]:

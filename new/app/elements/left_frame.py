@@ -1,8 +1,9 @@
 import customtkinter as ct
 
-from new.utility.colors import Color
+from new.utility import colors
 from new.conf.image_config import AvailableImages
 from new.app.app import App
+from new.app import controller
 
 
 def _build_left_frame_buttons(app: App, frame_width: int, rows: int) -> None:
@@ -14,17 +15,17 @@ def _build_left_frame_buttons(app: App, frame_width: int, rows: int) -> None:
     :return: None
     """
     btn_generate_text: str = "Generate QR"
-    btn_read_file_text: str = "Read QR from file"
-    btn_read_cam_text: str = "Read QR from camera"
+    btn_read_file_text: str = "Read QR"
     btn_follow_dev_text: str = "Follow Dev"
 
     # ============ left frame <generate> button ============
     app.lf_btn_generate = ct.CTkButton(
         master=app.lf,
         text=btn_generate_text,
-        # image=,
+        image=app.images[AvailableImages.QR],
+        compound=app.config.layout.button.img_position,
         text_font=(app.config.font.roboto, app.config.font.size_M),
-        command=app.generate_button_clik_event,
+        command=lambda: controller.generate_button_callback(app),
         height=app.config.layout.button.height,
         width=frame_width
     )
@@ -34,25 +35,14 @@ def _build_left_frame_buttons(app: App, frame_width: int, rows: int) -> None:
     app.lf_btn_generate = ct.CTkButton(
         master=app.lf,
         text=btn_read_file_text,
-        # image=,
+        image=app.images[AvailableImages.SCAN],
+        compound=app.config.layout.button.img_position,
         text_font=(app.config.font.roboto, app.config.font.size_M),
-        command=app.read_button_clik_event,
+        command=lambda: controller.read_button_callback(app),
         height=app.config.layout.button.height,
         width=frame_width
     )
     app.lf_btn_generate.grid(row=2, column=0, padx=app.config.layout.left_frame.inner_padx)
-
-    # ============ left frame <read cam> button ============
-    app.lf_btn_generate = ct.CTkButton(
-        master=app.lf,
-        text=btn_read_cam_text,
-        # image=,
-        text_font=(app.config.font.roboto, app.config.font.size_M),
-        command=app.read_button_clik_event,
-        height=app.config.layout.button.height,
-        width=frame_width
-    )
-    app.lf_btn_generate.grid(row=3, column=0, padx=app.config.layout.left_frame.inner_padx)
 
     # ============ left frame <premium> button ============
     app.lf_btn_generate = ct.CTkButton(
@@ -61,14 +51,12 @@ def _build_left_frame_buttons(app: App, frame_width: int, rows: int) -> None:
         text_font=(app.config.font.roboto, app.config.font.size_M),
         height=app.config.layout.button.height,
         width=frame_width,
-        fg_color=str(Color.GOLD.value),
-        hover_color=str(Color.DARK_GOLD.value),
-        text_color=str(Color.BLACK.value),
-        command=app.follow_dev_clik_event,
+
+        command=lambda: controller.follow_dev_button_callback(app.config.link.github),
         image=app.images[AvailableImages.GITHUB.value],
         compound=app.config.layout.button.img_position
     )
-    app.lf_btn_generate.grid(row=rows - 2, column=0, padx=app.config.layout.left_frame.inner_padx)
+    app.lf_btn_generate.grid(row=3, column=0, padx=app.config.layout.left_frame.inner_padx)
 
     # ============ left frame <report bug> button ============
     app.lf_btn_generate = ct.CTkButton(
@@ -76,10 +64,10 @@ def _build_left_frame_buttons(app: App, frame_width: int, rows: int) -> None:
         text="",
         width=app.config.image.bug.size,
         height=app.config.image.bug.size,
-        fg_color=str(Color.DARK_GRAY.value),
-        hover_color=str(Color.DARK_GRAY.value),
-        text_color=str(Color.BLACK.value),
-        command=app.follow_dev_clik_event,
+        fg_color=colors.DARK_GRAY,
+        hover_color=colors.DARK_GRAY,
+        text_color=colors.BLACK,
+        command=lambda: controller.follow_dev_button_callback(app.config.link.github),
         image=app.images[AvailableImages.BUG.value],
         compound=app.config.layout.button.img_position
     )

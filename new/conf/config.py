@@ -10,6 +10,7 @@ class App:
     name: str
     version: str
     auto_build: bool
+    update_time_ms: int
 
 
 @dataclass

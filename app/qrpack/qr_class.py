@@ -6,11 +6,12 @@ from dataclasses import dataclass
 from LIB.exceptionpack.exception_handler import handle_exceptions
 import qrcode
 
+
 class MissingQRColorError(ValueError):
     def __init__(self, *args: object) -> None:
         super().__init__(*args)
 
-@dataclass
+
 class QR:
     _image: bytes
     _debug: bool

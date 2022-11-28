@@ -1,9 +1,9 @@
 import customtkinter as ct
-import tkinter as tk
 
+from new.app import controller
 from new.app.app import App
 from new.app.elements.image_frame import build_image_frame
-from new.utility.colors import Color
+from new.utility import colors
 
 
 def build_right_frame_generate(app: App) -> ct.CTkFrame:
@@ -17,16 +17,18 @@ def build_right_frame_generate(app: App) -> ct.CTkFrame:
     label_qrcontent_text: str = "Enter QR Content"
     textbox_qrcontent_text: str = "Hello QR!"
     label_image_select_text: str = "Select QR Image"
+    btn_generate_text: str = "Generate QR"
 
     # ============ right frame setup ============
     frame_width: int = int(app.config.screen.size.split("x")[0]) // app.config.layout.right_frame.scale_factor
-    app.rf = ct.CTkFrame(master=app.gui, width=frame_width, corner_radius=app.config.layout.right_frame.corner_radius)
+    app.rf = ct.CTkFrame(master=app.gui, width=frame_width,
+                         corner_radius=0)  # app.config.layout.right_frame.corner_radius)
     app.rf.grid(
         row=0,
         column=1,
         sticky=app.config.layout.right_frame.sticky,
         padx=app.config.layout.right_frame.padding,
-        pady=app.config.layout.right_frame.padding
+        # pady=app.config.layout.right_frame.padding
     )
 
     # ============ right frame grid setup: 12x2 ============
@@ -92,6 +94,18 @@ def build_right_frame_generate(app: App) -> ct.CTkFrame:
     # ============ right frame image frame ============
     build_image_frame(app, ri + 6)
 
+    app.rf_btn_generate = ct.CTkButton(
+        master=app.rf,
+        text=btn_generate_text,
+        text_font=(app.config.font.roboto, int(app.config.font.title_size_M)),
+        height=app.config.layout.button.height,
+        fg_color=colors.WHITE,
+        hover_color=colors.GRAY,
+        text_color=colors.CYAN,
+        command=lambda: controller.generate_qr_callback(app)
+    )
+    app.rf_btn_generate.grid(row=ri + 7, column=0, padx=app.config.layout.right_frame.inner_padx, sticky="we")
+
     return app.rf
 
 
@@ -102,19 +116,16 @@ def build_right_frame_read(app) -> ct.CTkFrame:
     :return: right frame
     """
 
-    label: str = "Read QR from file"
-    read_cam_btn_text: str = "Read QR from camera"
-    follow_dev_btn_text: str = "Follow Dev"
-
     # ============ right frame setup ============
     frame_width: int = int(app.config.screen.size.split("x")[0]) // app.config.layout.right_frame.scale_factor
-    app.rf = ct.CTkFrame(master=app.gui, width=frame_width, corner_radius=app.config.layout.right_frame.corner_radius)
+    app.rf = ct.CTkFrame(master=app.gui, width=frame_width,
+                         corner_radius=0)  # app.config.layout.right_frame.corner_radius)
     app.rf.grid(
         row=0,
         column=1,
         sticky=app.config.layout.right_frame.sticky,
         padx=app.config.layout.right_frame.padding,
-        pady=app.config.layout.right_frame.padding
+        # pady=app.config.layout.right_frame.padding
     )
 
     # ============ right frame grid setup: 8x2 ============

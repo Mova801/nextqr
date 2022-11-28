@@ -1,7 +1,10 @@
+import tkinter
+
 import customtkinter as ct
 
 from new.app.app import App
-from new.utility.colors import Color
+from new.utility import colors
+from new.app import controller
 
 
 def build_image_frame(app: App, row_index: int) -> None:
@@ -13,13 +16,14 @@ def build_image_frame(app: App, row_index: int) -> None:
     """
     entry_path_text: str = "Enter Image Path"
     btn_browse_text: str = "Browse"
+    btn_show_text: str = "Show"
 
     # ============ right frame image frame ============
     app.rf_frame_image = ct.CTkFrame(
         master=app.rf,
         width=app.config.layout.image_frame.width,
         height=app.config.layout.image_frame.height,
-        # fg_color=Color.DARK_GRAY.value
+        fg_color=colors.DARK_GRAY
     )
     app.rf_frame_image.grid(row=row_index, column=0, padx=app.config.layout.right_frame.inner_padx)
 
@@ -43,13 +47,31 @@ def build_image_frame(app: App, row_index: int) -> None:
     )
 
     # ============ image frame <browse> button ============
-    app.imf_btn_validate_img_path = ct.CTkButton(
+    app.imf_btn_browse = ct.CTkButton(
         master=app.rf_frame_image,
         width=app.config.layout.button.width // 2,
         height=app.config.layout.button.height,
         text=btn_browse_text,
         # image=,
         text_font=(app.config.font.roboto, app.config.font.size_M),
-        command=app.browse_click_event,
+        command=lambda: controller.browse_button_callback(app),
     )
-    app.imf_btn_validate_img_path.grid(row=1, column=1, padx=1, sticky="w")
+    app.imf_btn_browse.grid(row=1, column=1, padx=1, sticky="w")
+
+    # ============ image frame <show> button ============
+    app.imf_btn_show_image = ct.CTkButton(
+        master=app.rf_frame_image,
+        width=app.config.layout.button.width // 2,
+        height=app.config.layout.button.height,
+        text=btn_show_text,
+        # image=,
+        text_font=(app.config.font.roboto, app.config.font.size_M),
+        command=lambda: controller.start_thread(
+            controller.show_image_button_callback,
+            app.imf_entry_path.get()
+        )
+    )
+    app.imf_btn_show_image.grid(row=1, column=1, padx=app.config.layout.button.width // 1.25, sticky="w")
+
+    # thread to check if the <show img button> should be disabled or not
+    controller.activate_btn_if_entry(app.imf_entry_path, app.imf_btn_show_image, app.config.app.update_time_ms)

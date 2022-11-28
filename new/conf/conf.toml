@@ -2,10 +2,11 @@
 
 # ================= GENERAL INFO =================
 [app]
-build = "27.11.2022"
+build = "28.11.2022"
 name = "NextQR"
 version = ".alpha-0.0.1"
 auto_build = false
+update_time_ms = 1000
 
 [screen]
 size = "900x600"
@@ -33,19 +34,27 @@ github = "https://github.com/Mova801"
 path = "src/images/logo.ico"
 
 [image.github]
-size = 32
+size = 25
 path = "src/images/github.png"
 
 [image.bug]
 size = 22
 path = "src/images/bug.png"
 
+[image.qr]
+size = 20
+path = "src/images/qr.png"
+
+[image.scan]
+size = 25
+path = "src/images/scan.png"
+
 # ================= LAYOUT =================
 [layout]
 [layout.button]
 width = 80
 height = 35
-img_position = "left"
+img_position = "right"
 
 [layout.entry]
 width = 300

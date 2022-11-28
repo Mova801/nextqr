@@ -1,8 +1,11 @@
-from enum import Enum
+color: tuple[int, int, int]
 
-
-class Color(Enum):
-    GOLD = "#FFB144"
-    DARK_GOLD = "#99692A"
-    DARK_GRAY = "#2A2D2E"
-    BLACK = "#000000"
+GOLD = "#FFB144"
+DARK_GOLD = "#99692A"
+DARK_GRAY = "#2A2D2E"
+BLACK = "#000000"
+WHITE = "#FFFFFF"
+GRAY = "#EEEEEE"
+CYAN = "#1F6AA5"
+LIGHT_CYAN = "#477BA3"
+DARK_CYAN = "#124063"

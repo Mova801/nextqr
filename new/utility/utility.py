@@ -1,6 +1,19 @@
 import PIL.Image
 import PIL.ImageTk
 import webbrowser as wb
+import re
+
+
+def sanitize_file_name(filename: str) -> str:
+    """
+    Removes any invalid character from the given filename.
+    :param filename: filename to sanitize
+    :return: sanitized filename
+    """
+    invalid_chars = [r'\\', r'\/', r'\:', r'\*', r'\?', r'\"', r'\<', r'\>', r'\|']
+    for char in invalid_chars:
+        filename = re.sub(char, "", filename)
+    return filename
 
 
 def open_image(image_name: str, size: int) -> PIL.ImageTk.PhotoImage:

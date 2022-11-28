@@ -1,3 +1,4 @@
+import time
 import tomllib
 from typing import Any
 from enum import StrEnum, auto
@@ -36,7 +37,8 @@ def _toml_to_nextqrconfig(tomlconf: dict[str, Any]) -> config.NextQrConfig:
             build=app["build"],
             name=app["name"],
             version=app["version"],
-            auto_build=app["auto_build"]
+            auto_build=app["auto_build"],
+            update_time_ms=app["update_time_ms"]
         ),
         screen=config.Screen(
             size=screen["size"],
@@ -88,13 +90,15 @@ def _toml_to_nextqrconfig(tomlconf: dict[str, Any]) -> config.NextQrConfig:
         image=config.Image(
             logo=ic.Logo(path=image["logo"]["path"]),
             github=ic.Github(size=image["github"]["size"], path=image["github"]["path"]),
-            bug=ic.Bug(size=image["bug"]["size"], path=image["bug"]["path"])
+            bug=ic.Bug(size=image["bug"]["size"], path=image["bug"]["path"]),
+            qr=ic.Qr(size=image["qr"]["size"], path=image["qr"]["path"]),
+            scan=ic.Scan(size=image["scan"]["size"], path=image["scan"]["path"])
         )
     )
     return nqc
 
 
-def load_configuration(filename: str, path: str = "") -> dict[str, Any]:
+def load_toml_configuration(filename: str, path: str = "") -> dict[str, Any]:
     """
     Loads a TOML configuration from a file.
     :param filename: configuration file name
@@ -116,5 +120,5 @@ def load_nextqr_configuration(filename: str, path: str = "") -> config.NextQrCon
     :param path: path to the conf file
     :return: NextQrConfig configuration
     """
-    toml_conf = load_configuration(filename, path)
+    toml_conf = load_toml_configuration(filename, path)
     return _toml_to_nextqrconfig(toml_conf)
