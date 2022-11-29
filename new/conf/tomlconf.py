@@ -14,6 +14,7 @@ class ConfigElements(StrEnum):
     FONT = auto()
     PATH = auto()
     LINK = auto()
+    QR = auto()
     IMAGE = auto()
     LAYOUT = auto()
 
@@ -29,6 +30,7 @@ def _toml_to_nextqrconfig(tomlconf: dict[str, Any]) -> config.NextQrConfig:
     font = tomlconf[ConfigElements.FONT.value]
     path = tomlconf[ConfigElements.PATH.value]
     link = tomlconf[ConfigElements.LINK.value]
+    qr = tomlconf[ConfigElements.QR.value]
     image = tomlconf[ConfigElements.IMAGE.value]
     layout = tomlconf[ConfigElements.LAYOUT.value]
 
@@ -56,6 +58,11 @@ def _toml_to_nextqrconfig(tomlconf: dict[str, Any]) -> config.NextQrConfig:
         ),
         path=config.Path(icons=path["icons"]),
         link=config.Link(github=link["github"]),
+        qr=config.Qr(
+            fill_color=tuple(qr["fill_color"]),
+            back_color=tuple(qr["back_color"]),
+            image_dimension=qr["image_dimension"]
+        ),
         layout=config.Layout(
             button=lc.Button(
                 width=layout["button"]["width"],

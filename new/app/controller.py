@@ -53,7 +53,6 @@ def browse_button_callback(app: App) -> None:
 
     if path:
         set_entry_text(path)
-    print(f"selected path: {path}")
 
 
 def show_image_button_callback(path: str) -> None:
@@ -95,14 +94,6 @@ def generate_qr_callback(app: App) -> None:
     """
     Generates a QR code and saves it.
     """
-    # TODO: get path to save the qr
-    # logging.info("function callback to 'generate_qr_callback'")
-    # logging.info("qr code generation started")
-
-    path: str = qr_facade.get_path_dialog(title="Select A Name", filetypes=[("png", "*.png"), ])
-    path: str = path.split("\\", 1)[0]
-    name: str = app.rf_entry_name.get()
-    content: str = app.rf_textbox_content.get(1.0, "end")
-    image: str = app.imf_entry_path.get()
-    print("n: " + name, "p: " + path, "i: " + image)
-    qr_facade.generate_qr(name, content, path, image)
+    logging.info("function callback to 'generate_qr_callback'")
+    qr_facade.generate_qr(app)
+    logging.info("qrcode generated")

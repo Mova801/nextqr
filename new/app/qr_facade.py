@@ -1,6 +1,7 @@
 from tkinter import filedialog
 from typing import Optional
 
+from new.app.app import App
 from new.utility import utility, nextqr
 
 
@@ -40,21 +41,40 @@ def open_file_dialog(
 
 def get_path_dialog(
         filetypes: list[str],
+        initialfile: str = "",
         title: Optional[str] = "Select A Path",
         initialdir: Optional[str] = "/") -> str:
     """
     Opens a file dialog and returns the selected path and the selected filename (restricted to the given filetypes).
-    :param title: title of the file dialog
     :param filetypes: list o selectable file types
+    :param initialfile: initial file name
+    :param title: title of the file dialog
     :param initialdir: initial file dialog directory
-    :return: selected path and filename
+    :return: selected path and file name
     """
-    return filedialog.asksaveasfilename(title=title, filetypes=filetypes, initialdir=initialdir)
+    return filedialog.asksaveasfilename(
+        title=title,
+        filetypes=filetypes,
+        initialdir=initialdir,
+        initialfile=initialfile
+    )
 
 
-def generate_qr(name: str, text: str, path: str, image: str) -> None:
-    back = (0, 0, 0)
-    fill = (255, 255, 255)
-    qr: nextqr.QR = nextqr.QR(name=name, data=text, fill_color=fill, back_color=back)
-    qr.add_image(image, 60)
-    qr.generate(path)
+def generate_qr(app: App) -> None:
+    name: str = app.rf_entry_name.get()
+
+    path: str = get_path_dialog(
+        filetypes=[("png", "*.png"), ],
+        initialfile=name
+    )
+    path, name = path.rsplit("/", 1)
+    content: str = app.rf_textbox_content.get(1.0, "end")
+    image: str = app.imf_entry_path.get()
+    qr: nextqr.QR = nextqr.QR(
+        name=name,
+        data=content,
+        fill_color=app.config.qr.fill_color,
+        back_color=app.config.qr.back_color
+    )
+    qr.add_image(image=image, dimension=app.config.qr.image_dimension)
+    qr.save(path)

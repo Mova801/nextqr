@@ -42,11 +42,19 @@ class Link:
 
 
 @dataclass
+class Qr:
+    fill_color: tuple[int, int, int]
+    back_color: tuple[int, int, int]
+    image_dimension: int
+
+
+@dataclass
 class NextQrConfig:
     app: App
     screen: Screen
     font: Font
     path: Path
     link: Link
+    qr: Qr
     layout: Layout
     image: Image
