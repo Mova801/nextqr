@@ -1,5 +1,4 @@
 from dataclasses import dataclass
-import inspect
 from enum import StrEnum, auto
 from typing import Any
 

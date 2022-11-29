@@ -1,5 +1,4 @@
 import tkinter as tk
-
 import customtkinter as ct
 
 from new.utility import colors
