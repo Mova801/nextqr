@@ -83,6 +83,8 @@ class App:
         elements.left_frame.build_left_frame(self)
         # default right frames
         elements.right_frame.build_right_frame_generate(self)
+        # TODO: complete read function
+        # ----------------------------
         self.rf_generating = True
 
     def run(self) -> None:

@@ -8,6 +8,7 @@ class AvailableImages(StrEnum):
     BUG = auto()
     QR = auto()
     SCAN = auto()
+    MEGAPHONE = auto()
 
 
 @dataclass
@@ -40,12 +41,19 @@ class Scan:
 
 
 @dataclass
+class Megaphone:
+    size: int
+    path: str
+
+
+@dataclass
 class Image:
     logo: Logo
     github: Github
     bug: Bug
     qr: Qr
     scan: Scan
+    megaphone: Megaphone
 
 
 def image_list_from_config(image: Image) -> list[dict[[str, int], [str, str]]]:
