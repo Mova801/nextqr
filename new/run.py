@@ -5,6 +5,7 @@ Module that runs NextQR app.
 
 from app.app import App
 from new.conf.tomlconf import load_nextqr_configuration
+from new.popups import error_popup
 
 CONFIG_PATH: str = "conf"
 CONFIG_FILE: str = "conf"
@@ -16,7 +17,8 @@ def main() -> None:
     try:
         config = load_nextqr_configuration(filename=CONFIG_FILE, path=CONFIG_PATH)
     except FileNotFoundError as e:
-        print(e)
+        # TODO: handle configuration file missing (i.e. open an error popup as warning, etc.)
+        error_popup.ErrorPopup().show()
         exit(0)
     app = App(config)
     app.build()

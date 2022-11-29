@@ -61,6 +61,9 @@ def get_path_dialog(
 
 
 def generate_qr(app: App) -> None:
+    """
+    Generates a qr code.
+    """
     name: str = app.rf_entry_name.get()
 
     path: str = get_path_dialog(
