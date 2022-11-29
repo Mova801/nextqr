@@ -1,5 +1,3 @@
-import tkinter
-
 import customtkinter as ct
 
 from new.app.app import App

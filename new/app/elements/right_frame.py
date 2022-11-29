@@ -27,8 +27,7 @@ def build_right_frame_generate(app: App) -> ct.CTkFrame:
         row=0,
         column=1,
         sticky=app.config.layout.right_frame.sticky,
-        padx=app.config.layout.right_frame.padding,
-        # pady=app.config.layout.right_frame.padding
+        padx=app.config.layout.right_frame.padding
     )
 
     # ============ right frame grid setup: 12x2 ============
