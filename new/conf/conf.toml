@@ -2,9 +2,9 @@
 
 # ================= GENERAL INFO =================
 [app]
-build = "28.11.2022"
+build = "29.11.2022"
 name = "NextQR"
-version = ".alpha-0.0.1"
+version = ".alpha-0.1.0"
 auto_build = false
 update_time_ms = 1000
 
