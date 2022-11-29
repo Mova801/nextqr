@@ -1,3 +1,5 @@
+import tkinter as tk
+
 import customtkinter as ct
 
 from new.utility import colors
@@ -40,7 +42,9 @@ def _build_left_frame_buttons(app: App, frame_width: int, rows: int) -> None:
         text_font=(app.config.font.roboto, app.config.font.size_M),
         command=lambda: controller.read_button_callback(app),
         height=app.config.layout.button.height,
-        width=frame_width
+        width=frame_width,
+        fg_color=colors.LIGHT_CYAN,
+        state=tk.DISABLED
     )
     app.lf_btn_generate.grid(row=2, column=0, padx=app.config.layout.left_frame.inner_padx)
 
