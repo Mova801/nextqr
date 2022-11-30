@@ -113,7 +113,7 @@ def load_toml_configuration(filename: str, path: str = "") -> dict[str, Any]:
     :return: TOML configuration
     """
     if path != "":
-        path = path + "\\"
+        path = path + "/"
     fto: str = f"{path}{filename}.toml"
     with open(fto, "rb") as f:
         data = tomllib.load(f)
