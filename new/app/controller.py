@@ -1,17 +1,21 @@
 """
 This module handle the calls to the App qr functions and also logs what happens.
 """
+from typing import Callable
 import logging
 import pathlib
 import threading
-from typing import Callable
 
-import customtkinter as ct
 import tkinter as tk
+import customtkinter as ct
 
-from new.app import elements, qr_facade
 from new.app.app import App
-from new.utility import colors
+from new.app import elements
+from new.app import qr_facade
+from new.libs import link
+from new.libs import constants
+from new.libs import filedialog_manager
+from new.libs import image_manager
 
 logging.basicConfig(level=logging.INFO)
 
@@ -34,18 +38,18 @@ def read_button_callback(app: App) -> None:
         app.rf_generating = False
 
 
-def follow_dev_button_callback(link: str) -> None:
+def follow_dev_button_callback(url: str) -> None:
     """Handles the left frame 'follow dev' button click."""
     logging.info("function callback to 'follow_dev_button_callback'")
-    logging.info(f"opening {link}...")
-    qr_facade.open_link_to_dev(link)
+    logging.info(f"opening {url}...")
+    link.Link(url).open()
 
 
 def browse_button_callback(app: App) -> None:
     """Handles the right frame 'browse' button click."""
     logging.info("function callback to 'browse_button_callback'")
     logging.info("opening file dialog to select a image")
-    path: str = qr_facade.open_file_dialog(filetypes=[("png", "*.png"), ])
+    path: str = filedialog_manager.open_file_dialog(filetypes=[("png", "*.png"), ])
 
     def set_entry_text(text: str) -> None:
         app.imf_entry_path.delete(0, tk.END)
@@ -61,7 +65,7 @@ def show_image_button_callback(path: str) -> None:
     logging.info("function callback to 'show_image_button_callback'")
     logging.info(f"validation of '{path}' as valid file: {valid_path}")
     if valid_path:
-        qr_facade.show_image_from_path(path)
+        image_manager.show_image(path)
 
 
 def start_thread(target_function: Callable, *args) -> None:
@@ -83,10 +87,10 @@ def activate_btn_if_entry(entry: ct.CTkEntry, btn_to_activate: ct.CTkButton, che
     btn_to_activate.after(check_time, activate_btn_if_entry, entry, btn_to_activate, check_time)
     if entry.get():
         btn_to_activate.configure(state=tk.NORMAL)
-        btn_to_activate.configure(fg_color=colors.CYAN)
+        btn_to_activate.configure(fg_color=constants.CYAN.hex)
     else:
         btn_to_activate.configure(state=tk.DISABLED)
-        btn_to_activate.configure(fg_color=colors.LIGHT_CYAN)
+        btn_to_activate.configure(fg_color=constants.LIGHT_CYAN.hex)
     # logging.info(f"status updated for '{btn_to_activate}': {btn_to_activate.state}")
 
 

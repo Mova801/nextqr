@@ -1,8 +1,8 @@
 import customtkinter as ct
 
-from new.popup import popup
 from new.app import controller
-from new.utility import colors
+from new.libs import constants
+from new.popup import popup
 
 _WIN_WIDTH: int = 450
 _WIN_HEIGHT: int = 200
@@ -59,7 +59,7 @@ class ErrorPopup(popup.Popup):
             master=self.frame_msg,
             text=self.msg,
             text_font=(_FONT, _FONT_SIZE),
-            text_color=colors.LIGHT_RED
+            text_color=constants.LIGHT_RED.hex
         )
         self.error_msg.pack(padx=20, pady=10, expand=True)
 

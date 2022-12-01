@@ -1,9 +1,9 @@
 import customtkinter as ct
 
-from new.app import controller
 from new.app.app import App
-from new.app.elements.image_frame import build_image_frame
-from new.utility import colors
+from new.app import controller
+from new.app.elements import image_frame
+from new.libs import constants
 
 
 def build_right_frame_generate(app: App) -> ct.CTkFrame:
@@ -91,16 +91,16 @@ def build_right_frame_generate(app: App) -> ct.CTkFrame:
     app.rf_label_title.grid(row=ri + 5, column=0, padx=app.config.layout.right_frame.inner_padx, sticky="w")
 
     # ============ right frame image frame ============
-    build_image_frame(app, ri + 6)
+    image_frame.build_image_frame(app, ri + 6)
 
     app.rf_btn_generate = ct.CTkButton(
         master=app.rf,
         text=btn_generate_text,
         text_font=(app.config.font.roboto, int(app.config.font.title_size_M)),
         height=app.config.layout.button.height,
-        fg_color=colors.WHITE,
-        hover_color=colors.GRAY,
-        text_color=colors.CYAN,
+        fg_color=constants.WHITE.hex,
+        hover_color=constants.GRAY.hex,
+        text_color=constants.CYAN.hex,
         command=lambda: controller.generate_qr_callback(app)
     )
     app.rf_btn_generate.grid(row=ri + 7, column=0, padx=app.config.layout.right_frame.inner_padx, sticky="we")

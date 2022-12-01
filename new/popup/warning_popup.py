@@ -1,7 +1,7 @@
 import customtkinter as ct
 
 from new.popup import popup
-from new.utility import colors
+from new.libs import constants
 
 
 class WarningPopup(popup.Popup):
@@ -51,7 +51,7 @@ class WarningPopup(popup.Popup):
             master=self.frame_msg,
             text=self.msg,
             text_font=(popup.FONT, popup.FONT_SIZE),
-            text_color=colors.GREEN
+            text_color=constants.GREEN.hex
         )
         self.error_msg.pack(padx=20, pady=20, expand=True)
 

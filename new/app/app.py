@@ -2,10 +2,10 @@ import PIL.ImageTk
 import customtkinter as ct
 
 from new.app import elements
-from new.conf.config import NextQrConfig
-from new.conf.image_config import image_list_from_config
+from new.conf import config
+from new.conf import image_config
 from new.exceptions import nextqr_exceptions
-from new.utility import utility
+from new.libs import image_manager
 
 ImageTkdictionary = dict[str, PIL.ImageTk]
 
@@ -22,23 +22,25 @@ class App:
     The auto_build option is disabled by default.
     """
 
-    def __init__(self, config: NextQrConfig) -> None:
+    def __init__(self, conf: config.NextQrConfig) -> None:
         # gui
         self.gui = ct.CTk()
-        self.gui.title(config.app.name + " " + config.app.version)
-        self.gui.geometry(config.screen.size)
-        self.gui.iconbitmap(config.image.logo.path)
-        self.gui.resizable(config.screen.resizable_width, config.screen.resizable_height)
+        self.gui.title(conf.app.name + " " + conf.app.version)
+        self.gui.geometry(conf.screen.size)
+        self.gui.iconbitmap(conf.image.logo.path)
+        self.gui.resizable(conf.screen.resizable_width, conf.screen.resizable_height)
         self.gui.protocol("WM_DELETE_WINDOW", self.close)  # call self.close() when app gets closed
 
         # setting app theme and appearance
-        self.config: NextQrConfig = config
+        self.config: config.NextQrConfig = conf
         self.appearance_mode: str = ""
         self.color_theme: str = ""
-        self.set_appearance_mode(config.screen.appearance_mode)
-        self.set_color_theme(config.screen.color_theme)
+        self.set_appearance_mode(conf.screen.appearance_mode)
+        self.set_color_theme(conf.screen.color_theme)
 
-        self.images: ImageTkdictionary = utility.load_images(image_list_from_config(self.config.image))
+        self.images: ImageTkdictionary = image_manager.load_images(
+            image_config.image_list_from_config(self.config.image)
+        )
         self.rf_generating: bool = False
 
         self.lf: ct.CTkFrame = ...
@@ -50,7 +52,7 @@ class App:
         self.rf_textbox_content: ct.CTkTextbox = ...
 
         # ...
-        if config.app.auto_build:
+        if conf.app.auto_build:
             self.config.app.auto_build = False
             self.build()
             self.config.app.auto_build = True

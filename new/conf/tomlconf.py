@@ -3,8 +3,8 @@ from typing import Any
 from enum import StrEnum, auto
 
 from new.conf import config
-import new.conf.image_config as ic
-import new.conf.layout_config as lc
+from new.conf import image_config
+from new.conf import layout_config
 
 
 class ConfigElements(StrEnum):
@@ -63,29 +63,29 @@ def _toml_to_nextqrconfig(tomlconf: dict[str, Any]) -> config.NextQrConfig:
             image_dimension=qr["image_dimension"]
         ),
         layout=config.Layout(
-            button=lc.Button(
+            button=layout_config.Button(
                 width=layout["button"]["width"],
                 height=layout["button"]["height"],
                 img_position=layout["button"]["img_position"]
             ),
-            entry=lc.Entry(
+            entry=layout_config.Entry(
                 width=layout["entry"]["width"],
                 height=layout["entry"]["height"]
             ),
-            textbox=lc.TextBox(
+            textbox=layout_config.TextBox(
                 width=layout["textbox"]["width"],
                 height=layout["textbox"]["height"]
             ),
-            image_frame=lc.ImageFrame(
+            image_frame=layout_config.ImageFrame(
                 width=layout["image_frame"]["width"],
                 height=layout["image_frame"]["height"]
             ),
-            left_frame=lc.LeftFrame(
+            left_frame=layout_config.LeftFrame(
                 scale_factor=layout["left_frame"]["scale_factor"],
                 inner_padx=layout["left_frame"]["inner_padx"],
                 sticky=layout["left_frame"]["sticky"]
             ),
-            right_frame=lc.RightFrame(
+            right_frame=layout_config.RightFrame(
                 scale_factor=layout["right_frame"]["scale_factor"],
                 padding=layout["right_frame"]["padding"],
                 corner_radius=layout["right_frame"]["corner_radius"],
@@ -94,12 +94,12 @@ def _toml_to_nextqrconfig(tomlconf: dict[str, Any]) -> config.NextQrConfig:
             )
         ),
         image=config.Image(
-            logo=ic.Logo(path=image["logo"]["path"]),
-            github=ic.Github(size=image["github"]["size"], path=image["github"]["path"]),
-            bug=ic.Bug(size=image["bug"]["size"], path=image["bug"]["path"]),
-            qr=ic.Qr(size=image["qr"]["size"], path=image["qr"]["path"]),
-            scan=ic.Scan(size=image["scan"]["size"], path=image["scan"]["path"]),
-            megaphone=ic.Megaphone(size=image["megaphone"]["size"], path=image["megaphone"]["path"])
+            logo=image_config.Logo(path=image["logo"]["path"]),
+            github=image_config.Github(size=image["github"]["size"], path=image["github"]["path"]),
+            bug=image_config.Bug(size=image["bug"]["size"], path=image["bug"]["path"]),
+            qr=image_config.Qr(size=image["qr"]["size"], path=image["qr"]["path"]),
+            scan=image_config.Scan(size=image["scan"]["size"], path=image["scan"]["path"]),
+            megaphone=image_config.Megaphone(size=image["megaphone"]["size"], path=image["megaphone"]["path"])
         )
     )
     return nqc

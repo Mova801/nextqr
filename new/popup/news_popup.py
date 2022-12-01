@@ -1,8 +1,8 @@
 import tkinter as tk
 import customtkinter as ct
 
+from new.libs import constants
 from new.popup import popup
-from new.utility import colors
 
 
 class NewsPopup(popup.Popup):
@@ -39,7 +39,7 @@ class NewsPopup(popup.Popup):
             master=self.win,
             text=self.title,
             text_font=(popup.FONT, popup.TITLE_SIZE, 'bold'),
-            text_color=colors.GREEN
+            text_color=constants.GREEN.hex
         )
         self.label_title.grid(row=0, padx=5, sticky="nsew")
 

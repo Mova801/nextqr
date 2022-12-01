@@ -1,8 +1,8 @@
 import customtkinter as ct
 
 from new.app.app import App
-from new.utility import colors
 from new.app import controller
+from new.libs import constants
 
 
 def build_image_frame(app: App, row_index: int) -> None:
@@ -21,7 +21,7 @@ def build_image_frame(app: App, row_index: int) -> None:
         master=app.rf,
         width=app.config.layout.image_frame.width,
         height=app.config.layout.image_frame.height,
-        fg_color=colors.DARK_GRAY
+        fg_color=constants.DARK_GRAY.hex
     )
     app.rf_frame_image.grid(row=row_index, column=0, padx=app.config.layout.right_frame.inner_padx)
 

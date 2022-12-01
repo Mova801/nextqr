@@ -2,11 +2,9 @@ import time
 import PIL.Image
 import qrcode
 
-from new.utility import utility
-from new.utility import colors
-
-WHITE: tuple[int, int, int] = (255, 255, 255)
-BLACK: tuple[int, int, int] = (0, 0, 0)
+from new.libs import constants
+from new.libs import color
+from new.libs import file_manager
 
 
 class QR:
@@ -14,22 +12,16 @@ class QR:
             self,
             name: str,
             data: str,
-            fill_color: tuple[int, int, int] = BLACK,
-            back_color: tuple[int, int, int] = WHITE
+            fill_color: tuple[int, int, int] = constants.BLACK,
+            back_color: tuple[int, int, int] = constants.WHITE
     ) -> None:
         if not name:
             name = f"qr_{time.strftime('%H%M%S'):_^2}"
 
-        self.name: str = utility.sanitize_file_name(name)
+        self.name: str = file_manager.sanitize_file_name(name)
 
-        # checks if fill and back colors are valid
-        if not utility.check_valid_rgb(fill_color):
-            fill_color = BLACK
-        if not utility.check_valid_rgb(back_color):
-            back_color = WHITE
-
-        self.fill_color: colors.color = fill_color
-        self.back_color: colors.color = back_color
+        self.fill_color = color.Color(fill_color)
+        self.back_color = color.Color(back_color)
 
         self.qr = qrcode.QRCode(
             version=1,
@@ -39,7 +31,7 @@ class QR:
         )
         self.qr.add_data(data)
         self.qr.make(fit=True)
-        self.qr_image: PIL.Image = self.qr.make_image(fill_color=self.fill_color, back_color=self.back_color)
+        self.qr_image: PIL.Image = self.qr.make_image(fill_color=self.fill_color.rbg, back_color=self.back_color.rbg)
 
     def add_image(self, image: str, dimension: int) -> None:
         """
