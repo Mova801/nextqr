@@ -15,9 +15,6 @@ class Color:
     __min_rgb_value: int = 0
     __max_rgb_value: int = 255
 
-    __min_hex_value: int = 0x0
-    __max_hex_value: int = 0xFF
-
     __rgb_colors_num: int = 3
 
     def __init__(self, *args) -> None:
