@@ -4,6 +4,19 @@ import webbrowser as wb
 import re
 
 
+def check_valid_rgb(color: tuple[int, int, int]) -> bool:
+    """
+    Checks if a given rbg formatted color is valid.
+    :param color: rbg color to check
+    :return: color validity
+    """
+    for elem in color:
+        # if elem not in range(0, 256)
+        if not (0 <= elem <= 255):
+            return False
+    return True
+
+
 def sanitize_file_name(filename: str) -> str:
     """
     Removes any invalid character from the given filename.

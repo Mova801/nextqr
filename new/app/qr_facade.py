@@ -24,7 +24,7 @@ def show_image_from_path(image: str, ) -> None:
 
 
 def open_file_dialog(
-        filetypes: list[str],
+        filetypes: list[tuple[str, str]],
         title: Optional[str] = "Select A File",
         initialdir: Optional[str] = "/") -> str:
     """
@@ -40,7 +40,7 @@ def open_file_dialog(
 
 
 def get_path_dialog(
-        filetypes: list[str],
+        filetypes: list[tuple[str, str]],
         initialfile: str = "",
         title: Optional[str] = "Select A Path",
         initialdir: Optional[str] = "/") -> str:

@@ -5,19 +5,29 @@ import qrcode
 from new.utility import utility
 from new.utility import colors
 
+WHITE: tuple[int, int, int] = (255, 255, 255)
+BLACK: tuple[int, int, int] = (0, 0, 0)
+
 
 class QR:
     def __init__(
             self,
             name: str,
             data: str,
-            fill_color: tuple[int, int, int] = (0, 0, 0),
-            back_color: tuple[int, int, int] = (255, 255, 255)
+            fill_color: tuple[int, int, int] = BLACK,
+            back_color: tuple[int, int, int] = WHITE
     ) -> None:
         if not name:
             name = f"qr_{time.strftime('%H%M%S'):_^2}"
+
         self.name: str = utility.sanitize_file_name(name)
-        # TODO: check if fill and back color are valid
+
+        # checks if fill and back colors are valid
+        if not utility.check_valid_rgb(fill_color):
+            fill_color = BLACK
+        if not utility.check_valid_rgb(back_color):
+            back_color = WHITE
+
         self.fill_color: colors.color = fill_color
         self.back_color: colors.color = back_color
 
