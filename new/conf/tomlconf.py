@@ -1,4 +1,3 @@
-import time
 import tomllib
 from typing import Any
 from enum import StrEnum, auto
@@ -99,7 +98,8 @@ def _toml_to_nextqrconfig(tomlconf: dict[str, Any]) -> config.NextQrConfig:
             github=ic.Github(size=image["github"]["size"], path=image["github"]["path"]),
             bug=ic.Bug(size=image["bug"]["size"], path=image["bug"]["path"]),
             qr=ic.Qr(size=image["qr"]["size"], path=image["qr"]["path"]),
-            scan=ic.Scan(size=image["scan"]["size"], path=image["scan"]["path"])
+            scan=ic.Scan(size=image["scan"]["size"], path=image["scan"]["path"]),
+            megaphone=ic.Megaphone(size=image["megaphone"]["size"], path=image["megaphone"]["path"])
         )
     )
     return nqc
@@ -113,7 +113,7 @@ def load_toml_configuration(filename: str, path: str = "") -> dict[str, Any]:
     :return: TOML configuration
     """
     if path != "":
-        path = path + "\\"
+        path = path + "/"
     fto: str = f"{path}{filename}.toml"
     with open(fto, "rb") as f:
         data = tomllib.load(f)

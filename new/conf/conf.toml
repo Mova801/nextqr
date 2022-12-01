@@ -55,6 +55,10 @@ path = "src/images/qr.png"
 size = 25
 path = "src/images/scan.png"
 
+[image.megaphone]
+size = 25
+path = "src/images/megaphone.png"
+
 # ================= LAYOUT =================
 [layout]
 [layout.button]

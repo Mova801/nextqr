@@ -1,0 +1,15 @@
+[[source]]
+url = "https://pypi.python.org/simple"
+verify_ssl = true
+name = "pypi"
+
+[requires]
+python_version = "3.11"
+
+[packages]
+colorama = "==0.4.6"
+customtkinter = "==4.6.3"
+darkdetect = "==0.7.1"
+Pillow = "==9.3.0"
+qrcode = "==7.3.1"
+tk = "==0.1.0"

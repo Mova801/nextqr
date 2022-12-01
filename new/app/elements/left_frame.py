@@ -1,5 +1,8 @@
+import tkinter as tk
 import customtkinter as ct
 
+from new.app import news
+from new.popup import preset_popups
 from new.utility import colors
 from new.conf.image_config import AvailableImages
 from new.app.app import App
@@ -17,6 +20,7 @@ def _build_left_frame_buttons(app: App, frame_width: int, rows: int) -> None:
     btn_generate_text: str = "Generate QR"
     btn_read_file_text: str = "Read QR"
     btn_follow_dev_text: str = "Follow Dev"
+    btn_news_dev: str = "Features Updates"
 
     # ============ left frame <generate> button ============
     app.lf_btn_generate = ct.CTkButton(
@@ -40,7 +44,9 @@ def _build_left_frame_buttons(app: App, frame_width: int, rows: int) -> None:
         text_font=(app.config.font.roboto, app.config.font.size_M),
         command=lambda: controller.read_button_callback(app),
         height=app.config.layout.button.height,
-        width=frame_width
+        width=frame_width,
+        fg_color=colors.LIGHT_CYAN,
+        state=tk.DISABLED
     )
     app.lf_btn_generate.grid(row=2, column=0, padx=app.config.layout.left_frame.inner_padx)
 
@@ -51,7 +57,6 @@ def _build_left_frame_buttons(app: App, frame_width: int, rows: int) -> None:
         text_font=(app.config.font.roboto, app.config.font.size_M),
         height=app.config.layout.button.height,
         width=frame_width,
-
         command=lambda: controller.follow_dev_button_callback(app.config.link.github),
         image=app.images[AvailableImages.GITHUB.value],
         compound=app.config.layout.button.img_position
@@ -72,6 +77,22 @@ def _build_left_frame_buttons(app: App, frame_width: int, rows: int) -> None:
         compound=app.config.layout.button.img_position
     )
     app.lf_btn_generate.grid(row=rows - 1, column=0, sticky="e", padx=app.config.layout.left_frame.inner_padx)
+
+    # ============ left frame <report bug> button ============
+    app.lf_btn_generate = ct.CTkButton(
+        master=app.lf,
+        text=btn_news_dev,
+        text_font=(app.config.font.roboto, app.config.font.size_M),
+        text_color=colors.WHITE,
+        fg_color=colors.GREEN,
+        hover_color=colors.DARK_GREEN,
+        height=app.config.layout.button.height,
+        width=frame_width,
+        command=lambda: preset_popups.get_news_popup(news.NEWS).show(),
+        image=app.images[AvailableImages.MEGAPHONE.value],
+        compound=app.config.layout.button.img_position
+    )
+    app.lf_btn_generate.grid(row=4, column=0, sticky="w", padx=app.config.layout.left_frame.inner_padx)
 
 
 def build_left_frame(app: App) -> ct.CTkFrame:
