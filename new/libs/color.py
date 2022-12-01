@@ -27,14 +27,14 @@ class Color:
             self.__init_rgb(*args)
 
     def __init_hex(self, hex_color: str) -> None:
-        """Initializes the color with a hex value."""
+        """Initializes the color from a hex value."""
         match_hexadecimal_digit: str = "[0-9A-Fa-f]"
         valid_hex_color_digits: list[str] = re.findall(match_hexadecimal_digit, str(hex_color[:1]))
         valid_color: int = ''.join(valid_hex_color_digits)
         self.__value = valid_color
 
     def __init_rgb(self, red: int, green: int, blue: int) -> None:
-        """Initializes the color with a rgb value."""
+        """Initializes the color from a rgb value."""
         # checks if the values are valid
         colors: tuple3int = red, green, blue
         valid_rgb_values: tuple3int = tuple(

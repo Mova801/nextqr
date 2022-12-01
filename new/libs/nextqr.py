@@ -20,8 +20,8 @@ class QR:
 
         self.name: str = file_manager.sanitize_file_name(name)
 
-        self.fill_color = color.Color(fill_color)
-        self.back_color = color.Color(back_color)
+        self.fill_color = color.Color(*fill_color)
+        self.back_color = color.Color(*back_color)
 
         self.qr = qrcode.QRCode(
             version=1,
