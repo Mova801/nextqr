@@ -14,6 +14,19 @@ class InvalidRGBColorError(ValueError):
         super().__init__(self.error)
 
 
+def _merge_list_elements(list_to_merge: list, id1: int, id2: int) -> list:
+    """
+    ....
+    :param list_to_merge: ....
+    :param id1: ....
+    :param id2: ....
+    :return: ....
+    """
+    list_copy = list_to_merge.copy()
+    list_copy[id1:id2 + 1] = [''.join(list_copy[id1: id2 + 1])]
+    return list_copy
+
+
 def _get_segmentation_len_for_hex_color(hlen: int) -> int:
     """
     Given the length of a hex color str calculates the segment length for the rgb conversion with the formula:
@@ -42,20 +55,20 @@ class Color:
     def __init__(self, *args) -> None:
         if len(args) == 1 and isinstance(args[0], str | int):
             # hex must be a str (but accept int also)
-            self.__init_hex(*args)
+            self.__init_hex__(*args)
         elif len(args) == 3 and isinstance(args[0], int) and isinstance(args[1], int) and isinstance(args[2], int):
-            self.__init_rgb(*args)
+            self.__init_rgb__(*args)
         else:
             raise InvalidRGBColorError(args)
 
-    def __init_hex(self, hex_color: str) -> None:
+    def __init_hex__(self, hex_color: str) -> None:
         """Initializes the color from a hex value."""
         match_hexadecimal_digit: str = "[0-9A-Fa-f]"
         valid_hex_color_digits: list[str] = re.findall(match_hexadecimal_digit, str(hex_color))
         valid_color: int = ''.join(valid_hex_color_digits)[:6]
         self.__value = valid_color
 
-    def __init_rgb(self, red: int, green: int, blue: int) -> None:
+    def __init_rgb__(self, red: int, green: int, blue: int) -> None:
         """Initializes the color from a rgb value."""
         # checks if the values are valid
         colors: tuple3int = red, green, blue
@@ -77,17 +90,19 @@ class Color:
     def rbg(self) -> tuple3int:
         """RGB color value."""
         # red, green, blue values in hexadecimal
-        print(len(self.__value))
-        segmentation_len: int = _get_segmentation_len_for_hex_color(len(self.__value))
-        print(segmentation_len)
+        segmentation_len: int = max(1, _get_segmentation_len_for_hex_color(len(self.__value)))
         hex_rgb_values: list[int] = textwrap.TextWrapper(width=segmentation_len).wrap(text=self.__value)
 
-        missing_colors_num: int = self.__rgb_colors_num - len(hex_rgb_values)
-        [hex_rgb_values.insert(0, "0") for _ in range(missing_colors_num)]
+        # if the length of the generated list is 4 or 5, merges the first 4 list values into 2 values
+        # to get a 2/3 elements list.
+        if len(hex_rgb_values) in [4, 5]:
+            hex_rgb_values = _merge_list_elements(hex_rgb_values, 0, 1)
+            hex_rgb_values = _merge_list_elements(hex_rgb_values, 1, 2)
 
-        if 3 < len(hex_rgb_values) < 6:
-            hex_rgb_values[0:1] = [''.join(hex_rgb_values[0: 1])]
-        print(hex_rgb_values)
+        # if the length of the list if below 3 then 0s are added to the end of the list till length 3 is reached.
+        missing_colors_num: int = self.__rgb_colors_num - len(hex_rgb_values)
+        [hex_rgb_values.append("0") for _ in range(missing_colors_num)]
+
         return tuple(int(value, 16) for value in hex_rgb_values)
 
     @property
