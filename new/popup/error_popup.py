@@ -1,6 +1,6 @@
 import customtkinter as ct
 
-from new.app import controller
+from new.controller import controller
 from new.libs import constants
 from new.popup import popup
 
@@ -26,7 +26,7 @@ class ErrorPopup(popup.Popup):
         self.win = ct.CTk()
         self.win.title(win_title)
         self.win.geometry(f"{_WIN_WIDTH}x{_WIN_HEIGHT}")
-        self.win.protocol("WM_DELETE_WINDOW", self.close)  # call self.close() when app gets closed
+        self.win.protocol("WM_DELETE_WINDOW", self.close)  # call self.close() when gui gets closed
         ct.set_appearance_mode("Dark")
         ct.set_default_color_theme("blue")
 

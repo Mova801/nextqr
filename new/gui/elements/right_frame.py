@@ -1,12 +1,11 @@
 import customtkinter as ct
 
-from new.app.app import App
-from new.app import controller
-from new.app.elements import image_frame
+from new.controller import controller
+from new.gui.elements import image_frame
 from new.libs import constants
 
 
-def build_right_frame_generate(app: App) -> ct.CTkFrame:
+def build_right_frame_generate(app) -> ct.CTkFrame:
     """
     Builds the layout of the right frame used to generate a new qr code.
     :param app: master of the frame
@@ -22,7 +21,7 @@ def build_right_frame_generate(app: App) -> ct.CTkFrame:
     # ============ right frame setup ============
     frame_width: int = int(app.config.screen.size.split("x")[0]) // app.config.layout.right_frame.scale_factor
     app.rf = ct.CTkFrame(master=app.gui, width=frame_width,
-                         corner_radius=0)  # app.config.layout.right_frame.corner_radius)
+                         corner_radius=0)  # gui.config.layout.right_frame.corner_radius)
     app.rf.grid(
         row=0,
         column=1,
@@ -118,13 +117,13 @@ def build_right_frame_read(app) -> ct.CTkFrame:
     # ============ right frame setup ============
     frame_width: int = int(app.config.screen.size.split("x")[0]) // app.config.layout.right_frame.scale_factor
     app.rf = ct.CTkFrame(master=app.gui, width=frame_width,
-                         corner_radius=0)  # app.config.layout.right_frame.corner_radius)
+                         corner_radius=0)  # gui.config.layout.right_frame.corner_radius)
     app.rf.grid(
         row=0,
         column=1,
         sticky=app.config.layout.right_frame.sticky,
         padx=app.config.layout.right_frame.padding,
-        # pady=app.config.layout.right_frame.padding
+        # pady=gui.config.layout.right_frame.padding
     )
 
     # ============ right frame grid setup: 8x2 ============

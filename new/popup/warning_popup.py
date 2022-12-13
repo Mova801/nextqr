@@ -18,7 +18,7 @@ class WarningPopup(popup.Popup):
         self.win = ct.CTk()
         self.win.title(win_title)
         self.win.geometry(f"{popup.WIN_WIDTH}x{popup.WIN_HEIGHT}")
-        self.win.protocol("WM_DELETE_WINDOW", self.close)  # call self.close() when app gets closed
+        self.win.protocol("WM_DELETE_WINDOW", self.close)  # call self.close() when gui gets closed
         ct.set_appearance_mode("Dark")
         ct.set_default_color_theme("blue")
 

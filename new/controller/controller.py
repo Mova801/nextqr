@@ -9,9 +9,8 @@ import threading
 import tkinter as tk
 import customtkinter as ct
 
-from new.app.app import App
-from new.app import elements
-from new.app import qr_facade
+from new.gui import elements
+from new.controller import qr_facade
 from new.libs import link
 from new.libs import constants
 from new.libs import filedialog_manager
@@ -20,7 +19,7 @@ from new.libs import image_manager
 logging.basicConfig(level=logging.INFO)
 
 
-def generate_button_callback(app: App) -> None:
+def generate_button_callback(app) -> None:
     """Handles the left frame 'generate' button click."""
     logging.info("function callback to 'generate_button_callback'")
     if not app.rf_generating:
@@ -29,7 +28,7 @@ def generate_button_callback(app: App) -> None:
         app.rf_generating = True
 
 
-def read_button_callback(app: App) -> None:
+def read_button_callback(app) -> None:
     """Handles the left frame 'read' button click."""
     logging.info("function callback to 'read_button_callback'")
     if app.rf_generating:
@@ -45,7 +44,7 @@ def follow_dev_button_callback(url: str) -> None:
     link.Link(url).open()
 
 
-def browse_button_callback(app: App) -> None:
+def browse_button_callback(app) -> None:
     """Handles the right frame 'browse' button click."""
     logging.info("function callback to 'browse_button_callback'")
     logging.info("opening file dialog to select a image")
@@ -94,7 +93,7 @@ def activate_btn_if_entry(entry: ct.CTkEntry, btn_to_activate: ct.CTkButton, che
     # logging.info(f"status updated for '{btn_to_activate}': {btn_to_activate.state}")
 
 
-def generate_qr_callback(app: App) -> None:
+def generate_qr_callback(app) -> None:
     """
     Generates a QR code and saves it.
     """

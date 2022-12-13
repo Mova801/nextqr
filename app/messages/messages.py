@@ -116,8 +116,8 @@ SETT_CONFIGURATION = """ ╔═════════════════�
 MENU_PAG1 = f""" ╔════════════════════════════════════════════════════════════════╗
  ║ [{colored("-", "red")}]                 {colored("Edit Settings Menu", "magenta")}            PAGE 1|2 [{colored(">", "blue")}] ║
  ╠════════════════════════════════════════════════════════════════╣
- ║ [{colored("app:", "cyan")}{colored("outpath", "green")}] → Output Folder   [{colored("qr:", "cyan")}{colored("fill", "green")}] → Fill QR Color      ║
- ║ [{colored("app:", "cyan")}{colored("inpath", "green")}]  → Input Folder    [{colored("qr:", "cyan")}{colored("back", "green")}] → Back QR Color      ║
+ ║ [{colored("gui:", "cyan")}{colored("outpath", "green")}] → Output Folder   [{colored("qr:", "cyan")}{colored("fill", "green")}] → Fill QR Color      ║
+ ║ [{colored("gui:", "cyan")}{colored("inpath", "green")}]  → Input Folder    [{colored("qr:", "cyan")}{colored("back", "green")}] → Back QR Color      ║
  ║ [{colored("opt:", "cyan")}{colored("show", "green")}]    → Show Settings   [{colored("qr:", "cyan")}{colored("logo", "green")}] → Logo QR Dimension  ║
  ╚════════════════════════════════════════════════════════════════╝
  """
@@ -125,8 +125,8 @@ MENU_PAG1 = f""" ╔════════════════════
 MENU_PAG2 = f""" ╔════════════════════════════════════════════════════════════════╗
  ║ [{colored("-", "red")}]                 {colored("Edit Settings Menu", "magenta")}            PAGE 2|2 [{colored("<", "blue")}] ║
  ╠════════════════════════════════════════════════════════════════╣
- ║ [{colored("app:", "cyan")}{colored("cwidth", "green")}] → Console Width   [{colored("cam:", "cyan")}{colored("showcam", "green")}] → Console Width   ║
- ║ [{colored("app:", "cyan")}{colored("clines", "green")}] → Console Lines                                   ║
+ ║ [{colored("gui:", "cyan")}{colored("cwidth", "green")}] → Console Width   [{colored("cam:", "cyan")}{colored("showcam", "green")}] → Console Width   ║
+ ║ [{colored("gui:", "cyan")}{colored("clines", "green")}] → Console Lines                                   ║
  ║ [{colored("opt:", "cyan")}{colored("reset", "green")}]  → Reset Config                                    ║
  ╚════════════════════════════════════════════════════════════════╝
  """

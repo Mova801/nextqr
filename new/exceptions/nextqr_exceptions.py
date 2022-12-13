@@ -1,5 +1,5 @@
 """
-Modules that contains all the app custom exceptions.
+Modules that contains all the gui custom exceptions.
 """
 
 

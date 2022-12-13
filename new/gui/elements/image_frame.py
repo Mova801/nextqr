@@ -1,11 +1,10 @@
 import customtkinter as ct
 
-from new.app.app import App
-from new.app import controller
+from new.controller import controller
 from new.libs import constants
 
 
-def build_image_frame(app: App, row_index: int) -> None:
+def build_image_frame(app, row_index: int) -> None:
     """
     Builds the layout of the image frame used to read qr image path and display the image.
     :param app: master of the frame

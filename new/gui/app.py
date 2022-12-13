@@ -1,7 +1,7 @@
 import PIL.ImageTk
 import customtkinter as ct
 
-from new.app import elements
+from new.gui import elements
 from new.conf import config
 from new.conf import image_config
 from new.exceptions import nextqr_exceptions
@@ -13,25 +13,25 @@ ImageTkdictionary = dict[str, PIL.ImageTk]
 class App:
     """
     NextQR application class.
-    In order to use a new app you must ensure to:
-        - instantiate a new app
-        - build the app
-        - run the app
+    In order to use a new gui you must ensure to:
+        - instantiate a new gui
+        - build the gui
+        - run the gui
 
-    If the auto_build option in the configuration file is enabled then you don't need build the app.
+    If the auto_build option in the configuration file is enabled then you don't need build the gui.
     The auto_build option is disabled by default.
     """
 
     def __init__(self, conf: config.NextQrConfig) -> None:
-        # gui
         self.gui = ct.CTk()
+        # gui
         self.gui.title(conf.app.name + " " + conf.app.version)
         self.gui.geometry(conf.screen.size)
         self.gui.iconbitmap(conf.image.logo.path)
         self.gui.resizable(conf.screen.resizable_width, conf.screen.resizable_height)
-        self.gui.protocol("WM_DELETE_WINDOW", self.close)  # call self.close() when app gets closed
+        self.gui.protocol("WM_DELETE_WINDOW", self.close)  # call self.close() when gui gets closed
 
-        # setting app theme and appearance
+        # setting gui theme and appearance
         self.config: config.NextQrConfig = conf
         self.appearance_mode: str = ""
         self.color_theme: str = ""

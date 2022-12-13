@@ -1,8 +1,8 @@
 """
 Created by Marco Vita (aka Mova801) on 16/09/2022
-Module that runs NextQR app.
+Module that runs NextQR gui.
 """
-from app.app import App
+from gui.app import App
 from new.conf import tomlconf
 from new.popup import preset_popups
 
@@ -11,7 +11,7 @@ CONFIG_FILE: str = "conf"
 
 
 def main() -> None:
-    """Creates and runs a new app."""
+    """Creates and runs a new gui."""
     config = None
     try:
         config = tomlconf.load_nextqr_configuration(filename=CONFIG_FILE, path=CONFIG_PATH)

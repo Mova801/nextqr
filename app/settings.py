@@ -124,8 +124,8 @@ def app_settings(msg_: MessageHandler) -> None:
                         f"{config}\n ► press 'Enter[←]' to continue ", color="magenta", clear=True)
                     continue
 
-                case "app:outpath" | "app:inpath":
-                    if menu_input == "app:outpath":
+                case "gui:outpath" | "gui:inpath":
+                    if menu_input == "gui:outpath":
                         dir_opt = "output_directory"
                     else:
                         dir_opt = "input_directory"
@@ -142,8 +142,8 @@ def app_settings(msg_: MessageHandler) -> None:
                         f"{config}\n ► press 'Enter[←]' to continue ", color="magenta", clear=True)
                     continue
 
-                case "app:cwidth" | "app:clines":
-                    if menu_input == "app:cwidth":
+                case "gui:cwidth" | "gui:clines":
+                    if menu_input == "gui:cwidth":
                         cons_opt = "width"
                     else:
                         cons_opt = "height"

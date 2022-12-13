@@ -1,6 +1,8 @@
 import re
 import textwrap
 
+from new.libs import stringpy
+
 tuple3int = tuple[int, int, int]
 _BLACK: tuple3int = (0, 0, 0)
 
@@ -14,30 +16,24 @@ class InvalidRGBColorError(ValueError):
         super().__init__(self.error)
 
 
-def _merge_list_elements(list_to_merge: list, id1: int, id2: int) -> list:
+def _merge_list_elements(list_to_merge: list, index1: int, index2: int) -> list:
     """
-    ....
-    :param list_to_merge: ....
-    :param id1: ....
-    :param id2: ....
-    :return: ....
+    Merges index1 and index2 of a list.
+    :param list_to_merge: list to merge
+    :param index1: starting index to merge
+    :param index2: ending index to merge
+    :return: list with merged item
+
+    # id          0   1   2   3   4   5
+    # list      [ 9 , 3 , 4 , 7 , 3 , 5 ]
+    # merge       0-><-1
+    # merged    [ 93 , 4 , 7 , 3 , 5 ]
+    # id_merged   0    1   2   3   4
+
     """
     list_copy = list_to_merge.copy()
-    list_copy[id1:id2 + 1] = [''.join(list_copy[id1: id2 + 1])]
+    list_copy[index1:index2 + 1] = [''.join(list_copy[index1: index2 + 1])]
     return list_copy
-
-
-def _get_segmentation_len_for_hex_color(hlen: int) -> int:
-    """
-    Given the length of a hex color str calculates the segment length for the rgb conversion with the formula:
-        seg_len = hlen // 3
-                      ^^^
-                    integer division (returns int)
-
-    :param hlen: hex color str length
-    :return: segment length
-    """
-    return hlen // 3
 
 
 class Color:
@@ -90,7 +86,7 @@ class Color:
     def rbg(self) -> tuple3int:
         """RGB color value."""
         # red, green, blue values in hexadecimal
-        segmentation_len: int = max(1, _get_segmentation_len_for_hex_color(len(self.__value)))
+        segmentation_len: int = max(1, len(self.__value // 3))
         hex_rgb_values: list[int] = textwrap.TextWrapper(width=segmentation_len).wrap(text=self.__value)
 
         # if the length of the generated list is 4 or 5, merges the first 4 list values into 2 values

@@ -1,12 +1,13 @@
-from new.app.app import App
 from new.libs import nextqr
 from new.libs import filedialog_manager
 
 
-def generate_qr(app: App) -> None:
+def generate_qr(app) -> None:
     """
     Generates a qr code.
     """
+    # name, path, content, image
+
     name: str = app.rf_entry_name.get()
 
     path: str = filedialog_manager.get_path_dialog(

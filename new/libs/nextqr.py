@@ -4,8 +4,7 @@ import qrcode
 
 from new.libs import constants
 from new.libs import color
-from new.libs import file_manager
-
+from new.libs import stringpy
 
 class QR:
     def __init__(
@@ -18,7 +17,7 @@ class QR:
         if not name:
             name = f"qr_{time.strftime('%H%M%S'):_^2}"
 
-        self.name: str = file_manager.sanitize_file_name(name)
+        self.name: str = stringpy.sanitize_file_name(name)
 
         self.fill_color = color.Color(*fill_color)
         self.back_color = color.Color(*back_color)

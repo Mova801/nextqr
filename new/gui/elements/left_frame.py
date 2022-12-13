@@ -1,15 +1,14 @@
 import tkinter as tk
 import customtkinter as ct
 
-from new.app.app import App
-from new.app import controller
-from new.app import news
+from new.controller import controller
+from new.gui import news
 from new.popup import preset_popups
 from new.libs import constants
 from new.conf import image_config
 
 
-def _build_left_frame_buttons(app: App, frame_width: int, rows: int) -> None:
+def _build_left_frame_buttons(app, frame_width: int, rows: int) -> None:
     """
     Builds the left frame option buttons.
     :param app: master of the frame
@@ -95,7 +94,7 @@ def _build_left_frame_buttons(app: App, frame_width: int, rows: int) -> None:
     app.lf_btn_generate.grid(row=4, column=0, sticky="w", padx=app.config.layout.left_frame.inner_padx)
 
 
-def build_left_frame(app: App) -> ct.CTkFrame:
+def build_left_frame(app) -> ct.CTkFrame:
     """
     Builds the layout of the left frame, contains many options.
     :param app: master of the frame
