@@ -6,6 +6,7 @@ from new.libs import constants
 from new.libs import color
 from new.libs import stringpy
 
+
 class QR:
     def __init__(
             self,

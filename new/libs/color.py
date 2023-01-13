@@ -86,7 +86,7 @@ class Color:
     def rbg(self) -> tuple3int:
         """RGB color value."""
         # red, green, blue values in hexadecimal
-        segmentation_len: int = max(1, len(self.__value // 3))
+        segmentation_len: int = max(1, len(self.__value) // 3)
         hex_rgb_values: list[int] = textwrap.TextWrapper(width=segmentation_len).wrap(text=self.__value)
 
         # if the length of the generated list is 4 or 5, merges the first 4 list values into 2 values
