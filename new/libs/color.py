@@ -1,8 +1,6 @@
 import re
 import textwrap
 
-from new.libs import stringpy
-
 tuple3int = tuple[int, int, int]
 _BLACK: tuple3int = (0, 0, 0)
 
@@ -59,9 +57,9 @@ class Color:
 
     def __init_hex__(self, hex_color: str) -> None:
         """Initializes the color from a hex value."""
-        match_hexadecimal_digit: str = "[0-9A-Fa-f]"
-        valid_hex_color_digits: list[str] = re.findall(match_hexadecimal_digit, str(hex_color))
-        valid_color: int = ''.join(valid_hex_color_digits)[:6]
+        valid_hexadecimal_digits: str = "[0-9A-Fa-f]"
+        valid_hex_color_digits: list[str] = re.findall(valid_hexadecimal_digits, str(hex_color))
+        valid_color: str = ''.join(valid_hex_color_digits)[:6]
         self.__value = valid_color
 
     def __init_rgb__(self, red: int, green: int, blue: int) -> None:
@@ -87,7 +85,7 @@ class Color:
         """RGB color value."""
         # red, green, blue values in hexadecimal
         segmentation_len: int = max(1, len(self.__value) // 3)
-        hex_rgb_values: list[int] = textwrap.TextWrapper(width=segmentation_len).wrap(text=self.__value)
+        hex_rgb_values: list[str] = textwrap.TextWrapper(width=segmentation_len).wrap(text=self.__value)
 
         # if the length of the generated list is 4 or 5, merges the first 4 list values into 2 values
         # to get a 2/3 elements list.
