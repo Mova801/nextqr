@@ -1,21 +1,21 @@
 import PIL.Image
 import PIL.ImageTk
 
-
 # @contextlib.contextmanager
 # def open_image(path: str) -> PIL.ImageTk.PhotoImage:
 #     """"""
 #     image = PIL.Image.open(path)
 #     yield image
 #     image.close()
+import customtkinter
 
 
 def open_image(image_name: str, size: int) -> PIL.ImageTk.PhotoImage:
     """Opens and resizes an image file and returns it as PhotoImage."""
     image = PIL.Image.open(image_name)
-    if size > 0:
-        image = image.resize((size, size), PIL.Image.ANTIALIAS)
-    return PIL.ImageTk.PhotoImage(image)
+    # if size > 0:
+    #     image = image.resize((size, size), PIL.Image.ANTIALIAS)
+    return customtkinter.CTkImage(dark_image=image, size=(size, size))
 
 
 def show_image(path: str) -> None:

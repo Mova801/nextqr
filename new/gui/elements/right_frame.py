@@ -41,7 +41,7 @@ def build_right_frame_generate(app) -> ct.CTkFrame:
     app.rf_label_title = ct.CTkLabel(
         master=app.rf,
         text=label_title_text,
-        text_font=(app.config.font.roboto, int(app.config.font.title_size_L))
+        font=(app.config.font.roboto, int(app.config.font.title_size_L))
     )
     app.rf_label_title.grid(row=ri, column=0, padx=app.config.layout.right_frame.inner_padx, sticky="w")
 
@@ -49,7 +49,7 @@ def build_right_frame_generate(app) -> ct.CTkFrame:
     app.rf_label_title = ct.CTkLabel(
         master=app.rf,
         text=entry_qrname_text,
-        text_font=(app.config.font.roboto, int(app.config.font.title_size_M))
+        font=(app.config.font.roboto, int(app.config.font.title_size_M))
     )
     app.rf_label_title.grid(row=ri + 1, column=0, padx=app.config.layout.right_frame.inner_padx, sticky="w")
 
@@ -59,7 +59,7 @@ def build_right_frame_generate(app) -> ct.CTkFrame:
         width=app.config.layout.entry.width,
         height=app.config.layout.entry.height,
         placeholder_text=entry_qrname_text,
-        text_font=(app.config.font.roboto, app.config.font.size_M),
+        font=(app.config.font.roboto, app.config.font.size_M),
     )
     app.rf_entry_name.grid(row=ri + 2, column=0, padx=app.config.layout.right_frame.inner_padx * 1.5, sticky="w")
 
@@ -67,7 +67,7 @@ def build_right_frame_generate(app) -> ct.CTkFrame:
     app.rf_label_title = ct.CTkLabel(
         master=app.rf,
         text=label_qrcontent_text,
-        text_font=(app.config.font.roboto, int(app.config.font.title_size_M))
+        font=(app.config.font.roboto, int(app.config.font.title_size_M))
     )
     app.rf_label_title.grid(row=ri + 3, column=0, padx=app.config.layout.right_frame.inner_padx, sticky="w")
 
@@ -76,7 +76,7 @@ def build_right_frame_generate(app) -> ct.CTkFrame:
         master=app.rf,
         width=app.config.layout.textbox.width,
         height=app.config.layout.textbox.height,
-        text_font=(app.config.font.roboto, app.config.font.size_M),
+        font=(app.config.font.roboto, app.config.font.size_M),
     )
     app.rf_textbox_content.grid(row=ri + 4, column=0, padx=app.config.layout.right_frame.inner_padx * 1.5, sticky="w")
     app.rf_textbox_content.insert("0.0", textbox_qrcontent_text)
@@ -85,7 +85,7 @@ def build_right_frame_generate(app) -> ct.CTkFrame:
     app.rf_label_title = ct.CTkLabel(
         master=app.rf,
         text=label_image_select_text,
-        text_font=(app.config.font.roboto, int(app.config.font.title_size_M))
+        font=(app.config.font.roboto, int(app.config.font.title_size_M))
     )
     app.rf_label_title.grid(row=ri + 5, column=0, padx=app.config.layout.right_frame.inner_padx, sticky="w")
 
@@ -95,7 +95,7 @@ def build_right_frame_generate(app) -> ct.CTkFrame:
     app.rf_btn_generate = ct.CTkButton(
         master=app.rf,
         text=btn_generate_text,
-        text_font=(app.config.font.roboto, int(app.config.font.title_size_M)),
+        font=(app.config.font.roboto, int(app.config.font.title_size_M)),
         height=app.config.layout.button.height,
         fg_color=constants.WHITE.hex,
         hover_color=constants.GRAY.hex,
@@ -136,7 +136,7 @@ def build_right_frame_read(app) -> ct.CTkFrame:
     app.rf_label_title = ct.CTkLabel(
         master=app.rf,
         text="Read QR Code",
-        text_font=(app.config.font.roboto, int(app.config.font.title_size_L))
+        font=(app.config.font.roboto, int(app.config.font.title_size_L))
     )
     app.rf_label_title.grid(row=0, column=0, padx=app.config.layout.right_frame.inner_padx, sticky="w")
 
@@ -146,7 +146,7 @@ def build_right_frame_read(app) -> ct.CTkFrame:
         width=app.config.layout.entry.width,
         height=app.config.layout.entry.height,
         placeholder_text="Enter QR file name (png)",
-        text_font=(app.config.font.roboto, app.config.font.size_M),
+        font=(app.config.font.roboto, app.config.font.size_M),
     )
     app.rf_entry_qrname.grid(row=1, column=0, padx=app.config.layout.right_frame.inner_padx, sticky="w")
 

@@ -35,7 +35,7 @@ def build_image_frame(app, row_index: int) -> None:
         width=app.config.layout.entry.width,
         height=app.config.layout.entry.height,
         placeholder_text=entry_path_text,
-        text_font=(app.config.font.roboto, app.config.font.size_M),
+        font=(app.config.font.roboto, app.config.font.size_M),
     )
     app.imf_entry_path.grid(
         row=1,
@@ -50,7 +50,7 @@ def build_image_frame(app, row_index: int) -> None:
         height=app.config.layout.button.height,
         text=btn_browse_text,
         # image=,
-        text_font=(app.config.font.roboto, app.config.font.size_M),
+        font=(app.config.font.roboto, app.config.font.size_M),
         command=lambda: controller.browse_button_callback(app),
     )
     app.imf_btn_browse.grid(row=1, column=1, padx=1, sticky="w")
@@ -62,7 +62,7 @@ def build_image_frame(app, row_index: int) -> None:
         height=app.config.layout.button.height,
         text=btn_show_text,
         # image=,
-        text_font=(app.config.font.roboto, app.config.font.size_M),
+        font=(app.config.font.roboto, app.config.font.size_M),
         command=lambda: controller.start_thread(
             controller.show_image_button_callback,
             app.imf_entry_path.get()

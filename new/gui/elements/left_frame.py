@@ -27,7 +27,7 @@ def _build_left_frame_buttons(app, frame_width: int, rows: int) -> None:
         text=btn_generate_text,
         image=app.images[image_config.AvailableImages.QR],
         compound=app.config.layout.button.img_position,
-        text_font=(app.config.font.roboto, app.config.font.size_M),
+        font=(app.config.font.roboto, app.config.font.size_M),
         command=lambda: controller.generate_button_callback(app),
         height=app.config.layout.button.height,
         width=frame_width
@@ -40,7 +40,7 @@ def _build_left_frame_buttons(app, frame_width: int, rows: int) -> None:
         text=btn_read_file_text,
         image=app.images[image_config.AvailableImages.SCAN],
         compound=app.config.layout.button.img_position,
-        text_font=(app.config.font.roboto, app.config.font.size_M),
+        font=(app.config.font.roboto, app.config.font.size_M),
         command=lambda: controller.read_button_callback(app),
         height=app.config.layout.button.height,
         width=frame_width,
@@ -53,7 +53,7 @@ def _build_left_frame_buttons(app, frame_width: int, rows: int) -> None:
     app.lf_btn_generate = ct.CTkButton(
         master=app.lf,
         text=btn_follow_dev_text,
-        text_font=(app.config.font.roboto, app.config.font.size_M),
+        font=(app.config.font.roboto, app.config.font.size_M),
         height=app.config.layout.button.height,
         width=frame_width,
         command=lambda: controller.follow_dev_button_callback(app.config.link.github),
@@ -81,7 +81,7 @@ def _build_left_frame_buttons(app, frame_width: int, rows: int) -> None:
     app.lf_btn_generate = ct.CTkButton(
         master=app.lf,
         text=btn_news_dev,
-        text_font=(app.config.font.roboto, app.config.font.size_M),
+        font=(app.config.font.roboto, app.config.font.size_M),
         text_color=constants.WHITE.hex,
         fg_color=constants.GREEN.hex,
         hover_color=constants.DARK_GREEN.hex,
@@ -114,7 +114,7 @@ def build_left_frame(app) -> ct.CTkFrame:
     app.rf_label_title = ct.CTkLabel(
         master=app.lf,
         text=app.config.app.name,
-        text_font=(app.config.font.roboto, int(app.config.font.title_size_L))
+        font=(app.config.font.roboto, int(app.config.font.title_size_L))
     )
     app.rf_label_title.grid(row=0, column=0)
 
@@ -125,7 +125,7 @@ def build_left_frame(app) -> ct.CTkFrame:
     app.rf_label_build = ct.CTkLabel(
         master=app.lf,
         text=f"build {app.config.app.build} v{app.config.app.version}",
-        text_font=(app.config.font.roboto, int(app.config.font.size_S))
+        font=(app.config.font.roboto, int(app.config.font.size_S))
     )
     app.rf_label_build.grid(row=row_number - 1, column=0, sticky="w", padx=app.config.layout.left_frame.inner_padx)
 
