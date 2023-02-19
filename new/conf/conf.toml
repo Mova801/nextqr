@@ -31,8 +31,8 @@ github = "https://github.com/Mova801"
 # ================= QR =================
 [qr]
 fill_color = [0, 0, 0]
-back_color = [35, 135, 206]
-image_dimension = 120
+back_color = [255, 255, 255] # [35, 135, 206]
+image_dimension = 150
 
 # ================= IMAGES =================
 [image]

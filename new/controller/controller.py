@@ -82,7 +82,7 @@ def start_thread(target_function: Callable, *args) -> None:
 
 def activate_btn_if_entry(entry: ct.CTkEntry, btn_to_activate: ct.CTkButton, check_time: int) -> None:
     """..."""
-    logging.info("function callback to 'activate_btn_if_entry'")
+    # logging.info("function callback to 'activate_btn_if_entry'")
     btn_to_activate.after(check_time, activate_btn_if_entry, entry, btn_to_activate, check_time)
     if entry.get():
         btn_to_activate.configure(state=tk.NORMAL)
